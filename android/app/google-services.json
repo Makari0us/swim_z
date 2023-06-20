@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "253865350437",
+    "project_id": "swim-z",
+    "storage_bucket": "swim-z.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253865350437:android:550883b62b168dd96ff6cc",
+        "android_client_info": {
+          "package_name": "com.example.swim_z"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253865350437-i7eouu9nre9ikbtk63s2lu937t6avi2c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJanBVgkv2DM49Tiagx9kvi9MHyZ7LBBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253865350437-i7eouu9nre9ikbtk63s2lu937t6avi2c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
