@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'home_page.dart';
+import 'signup_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,13 +21,32 @@ class _LoginPageState extends State<LoginPage> {
   bool _passwordInvisible = true;
 
   void _onPressed() async {
-    // Implement the logic for the button's onPressed event here
-   try {
-    final UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
-    print ('login successful');
-   } catch (e) {
-    print ('login failed');
-   }
+    try {
+      final UserCredential userCredential =
+          await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      print('Login successful!'); // Credentials are valid
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MyHomePage(
+                  title: 'Test',
+                )),
+      );
+    } catch (e) {
+      print('Login failed: $e'); // Credentials are invalid
+    }
+  }
+
+  void _goToSignUpPage() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SignUpPage()),
+    );
   }
 
   @override
@@ -32,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/bg.jpg"),
+            image: AssetImage('assets/images/login-bg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -40,17 +63,24 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("assets/images/bg.jpg", width: 100, height: 100,),
-            SizedBox(height: 20.0),
+            Image.asset(
+              'assets/images/swimzen-logo.png',
+              width: 250,
+              height: 250,
+            ),
+            SizedBox(height: 10.0),
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
                 labelText: 'Email',
+                // filled: true,
+                // fillColor: Colors.white,
                 prefixIcon: Icon(Icons.email_outlined),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
-                    Radius.circular(100.0),
+                    Radius.circular(20.0),
                   ),
+                  borderSide: BorderSide(width: 50.0),
                 ),
               ),
             ),
@@ -59,6 +89,8 @@ class _LoginPageState extends State<LoginPage> {
               controller: _passwordController,
               decoration: InputDecoration(
                 labelText: 'Password',
+                // filled: true,
+                // fillColor: Colors.white,
                 prefixIcon: Icon(Icons.lock_outline),
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -75,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
-                    Radius.circular(100.0),
+                    Radius.circular(20.0),
                   ),
                 ),
               ),
@@ -85,6 +117,21 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               onPressed: _onPressed,
               child: Text('Login Here'),
+            ),
+            SizedBox(height: 30.0),
+            RichText(
+              text: TextSpan(
+                text: 'Don\'t have an account? ',
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Sign Up',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    recognizer: TapGestureRecognizer()..onTap = _goToSignUpPage,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
