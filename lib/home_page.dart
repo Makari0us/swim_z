@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       //   color: Colors.white,
                       // ),
                       child: Image.asset(
-                        'assets/images/swimzen-logo.png',
+                        'assets/images/advice-icon.png',
                         height: 130.0,
                         width: 130.0,
                         fit: BoxFit.cover,
@@ -150,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     top: 10.0,
                     left: 10.0,
                     child: Image.asset(
-                      'assets/images/swimzen-logo.png',
+                      'assets/images/nutrition-icon.png',
                       height: 130.0,
                       width: 130.0,
                       fit: BoxFit.cover,
@@ -187,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     top: 10.0,
                     left: 10.0,
                     child: Image.asset(
-                      'assets/images/swimzen-logo.png',
+                      'assets/images/anxiety-icon.png',
                       height: 130.0,
                       width: 130.0,
                       fit: BoxFit.cover,
@@ -224,7 +224,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     top: 10.0,
                     left: 10.0,
                     child: Image.asset(
-                      'assets/images/swimzen-logo.png',
+                      'assets/images/injury-icon.png',
                       height: 130.0,
                       width: 130.0,
                       fit: BoxFit.cover,
@@ -261,7 +261,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     top: 10.0,
                     left: 10.0,
                     child: Image.asset(
-                      'assets/images/swimzen-logo.png',
+                      'assets/images/environment-icon.png',
                       height: 130.0,
                       width: 130.0,
                       fit: BoxFit.cover,
