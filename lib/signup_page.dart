@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,6 +18,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _passwordInvisible = true;
+  String? userUID;
 
   void _goToLoginPage() {
     Navigator.pushReplacement(
@@ -45,14 +47,25 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  _addUserDetails() async {
+    await FirebaseFirestore.instance.collection('Users').doc(userUID).set({
+      'Name': _nameController.text.trim(),
+      'Email': _emailController.text.trim(),
+      'UserID': userUID,
+    });
+  }
+
   void _registerAccount() async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
               email: _emailController.text, password: _passwordController.text);
       // Registration is successful
-      print('Registered user: ${userCredential.user?.uid}');
 
+      print('Registered user: ${userCredential.user?.uid}');
+      userUID = userCredential.user!.uid;
+
+      _addUserDetails();
       _goToLoginPage();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
