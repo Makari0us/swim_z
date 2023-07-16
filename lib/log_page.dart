@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +15,16 @@ class LogPage extends StatefulWidget {
 class _LogPageState extends State<LogPage> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _detailsController = TextEditingController();
+  // final TextEditingController _detailsController = TextEditingController();
+
+  // Details
+  final TextEditingController _strokeController = TextEditingController();
+  final TextEditingController _distanceController = TextEditingController();
+
+  //Results
   final TextEditingController _resultsController = TextEditingController();
+  final TextEditingController _goalsController = TextEditingController();
+
   late User _currentUser;
 
   void _getCurrentUser() async {
@@ -39,15 +49,23 @@ class _LogPageState extends State<LogPage> {
       await collectionReference.doc(_dateController.text).set({
         'Date': _dateController.text.trim(),
         'Location': _locationController.text.trim(),
-        'Details': _detailsController.text.trim(),
-        'Result': _resultsController.text.trim(),
+        // 'Details': _detailsController.text.trim(),
+        'Strokes': _strokeController.text.trim(),
+        'Distance': _distanceController.text.trim(),
+
+        'Results': _resultsController.text.trim(),
+        'Goals': _goalsController.text.trim(),
       });
 
       // Clear input fields after saving
       _dateController.clear();
       _locationController.clear();
-      _detailsController.clear();
+      // _detailsController.clear();
+      _strokeController.clear();
+      _distanceController.clear();
+
       _resultsController.clear();
+      _goalsController.clear();
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -69,7 +87,7 @@ class _LogPageState extends State<LogPage> {
       appBar: AppBar(
         title: Text("Journal"),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(20.0),
         child: Column(
           children: [
@@ -113,20 +131,129 @@ class _LogPageState extends State<LogPage> {
                 hintText: 'Location',
               ),
             ),
-            SizedBox(height: 10.0),
-            TextField(
-              controller: _detailsController,
-              decoration: InputDecoration(
-                icon: Icon(Icons.book_rounded),
-                hintText: 'Details',
+            SizedBox(height: 20.0),
+            // TextField(
+            //   controller: _detailsController,
+            //   decoration: InputDecoration(
+            //     icon: Icon(Icons.book_rounded),
+            //     hintText: 'Details',
+            //   ),
+            // ),
+            // Put Details Section Here (Strokes, Distance, etc.)
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              padding: EdgeInsets.all(30.0),
+              child: Column(
+                children: [
+                  Text(
+                    'Details',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  TextField(
+                    controller: _strokeController,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.numbers_outlined,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Stroke',
+                      hintStyle: TextStyle(color: Colors.white),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                  TextField(
+                    controller: _distanceController,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.arrow_circle_right_outlined,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Distance',
+                      hintStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                ],
               ),
             ),
             SizedBox(height: 10.0),
-            TextField(
-              controller: _resultsController,
-              decoration: InputDecoration(
-                icon: Icon(Icons.check_circle_outline),
-                hintText: 'Results',
+
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.blue[700],
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              padding: EdgeInsets.all(30.0),
+              child: Column(
+                children: [
+                  Text(
+                    'Results',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  TextField(
+                    controller: _resultsController,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.check_circle_outline,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Results',
+                      hintStyle: TextStyle(color: Colors.white),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                  TextField(
+                    controller: _goalsController,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.access_time,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Goals',
+                      hintStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                ],
               ),
             ),
             SizedBox(height: 20.0),
