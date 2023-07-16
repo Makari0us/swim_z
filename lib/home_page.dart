@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:swim_z/advice_page.dart';
+import 'package:swim_z/log_page.dart';
 import 'package:swim_z/nutrition_page.dart';
 
 import 'package:swim_z/search_page.dart';
@@ -119,38 +120,44 @@ class _MyHomePageState extends State<MyHomePage> {
             // Stress
             Padding(
               padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: Container(
-                      height: 150,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 5.0,
-                    right: 15.0,
-                    child: Text(
-                      'Stress',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.bold,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LogPage()));
+                },
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Container(
+                        height: 150,
+                        color: Colors.blue,
                       ),
                     ),
-                  ),
-                  Positioned(
-                    top: 10.0,
-                    left: 10.0,
-                    child: Image.asset(
-                      'assets/images/anxiety-icon.png',
-                      height: 130.0,
-                      width: 130.0,
-                      fit: BoxFit.cover,
+                    Positioned(
+                      bottom: 5.0,
+                      right: 15.0,
+                      child: Text(
+                        'Log Page (Temp)',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                    Positioned(
+                      top: 10.0,
+                      left: 10.0,
+                      child: Image.asset(
+                        'assets/images/anxiety-icon.png',
+                        height: 130.0,
+                        width: 130.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             // Injury
