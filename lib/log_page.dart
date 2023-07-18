@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,14 +18,36 @@ class _LogPageState extends State<LogPage> {
   // final TextEditingController _detailsController = TextEditingController();
 
   // Details
-  final TextEditingController _strokeController = TextEditingController();
-  final TextEditingController _distanceController = TextEditingController();
+  // final TextEditingController _strokeController = TextEditingController();
+  // final TextEditingController _distanceController = TextEditingController();
 
   //Results
   final TextEditingController _resultsController = TextEditingController();
   final TextEditingController _goalsController = TextEditingController();
 
   late User _currentUser;
+
+  final List<String> _strokeOptions = [
+    'Freestyle',
+    'Butterfly',
+    'Breaststroke',
+    'Backstroke',
+    'Individual Medley',
+  ];
+
+  final List<String> _distanceOptions = [
+    '50m',
+    '50y',
+    '100m',
+    '100y',
+    '200m',
+    '200y',
+  ];
+
+  // String _selectedStroke = '';
+  String? _selectedStroke;
+
+  String? _selectedDistance;
 
   void _getCurrentUser() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -50,8 +72,8 @@ class _LogPageState extends State<LogPage> {
         'Date': _dateController.text.trim(),
         'Location': _locationController.text.trim(),
         // 'Details': _detailsController.text.trim(),
-        'Strokes': _strokeController.text.trim(),
-        'Distance': _distanceController.text.trim(),
+        'Strokes': _selectedStroke,
+        'Distance': _selectedDistance,
 
         'Results': _resultsController.text.trim(),
         'Goals': _goalsController.text.trim(),
@@ -61,8 +83,8 @@ class _LogPageState extends State<LogPage> {
       _dateController.clear();
       _locationController.clear();
       // _detailsController.clear();
-      _strokeController.clear();
-      _distanceController.clear();
+      // _strokeController.clear();
+      // _distanceController.clear();
 
       _resultsController.clear();
       _goalsController.clear();
@@ -156,27 +178,76 @@ class _LogPageState extends State<LogPage> {
                       fontSize: 20.0,
                     ),
                   ),
-                  TextField(
-                    controller: _strokeController,
-                    style: TextStyle(color: Colors.white),
+                  // TextField(
+                  //   controller: _strokeController,
+                  //   style: TextStyle(color: Colors.white),
+                  //   decoration: InputDecoration(
+                  //     icon: Icon(
+                  //       Icons.numbers_outlined,
+                  //       color: Colors.white,
+                  //     ),
+                  //     hintText: 'Stroke',
+                  //     hintStyle: TextStyle(color: Colors.white),
+                  //     enabledBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(
+                  //         color: Colors.white,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+
+                  // DropdownButton<String>(
+                  //   value: _selectedStroke,
+                  //   onChanged: (String? newValue) {
+                  //     setState(() {
+                  //       _selectedStroke = newValue!;
+                  //     });
+                  //   },
+                  //   items: _strokeOptions.map<DropdownMenuItem<String>>(
+                  //     (String value) {
+                  //       return DropdownMenuItem<String>(
+                  //         value: value,
+                  //         child: Text(value),
+                  //       );
+                  //     },
+                  //   ).toList(),
+                  // ),
+
+                  DropdownButtonFormField(
                     decoration: InputDecoration(
                       icon: Icon(
-                        Icons.numbers_outlined,
+                        Icons.water,
                         color: Colors.white,
                       ),
                       hintText: 'Stroke',
-                      hintStyle: TextStyle(color: Colors.white),
+                      hintStyle: TextStyle(
+                        color: Colors.white,
+                      ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.white,
                         ),
                       ),
                     ),
+                    // style: TextStyle(
+                    //   color: Colors.white,
+                    // ),
+                    value: _selectedStroke,
+                    items: _strokeOptions.map((String stroke) {
+                      return DropdownMenuItem<String>(
+                        value: stroke,
+                        child: Text(stroke),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedStroke = value;
+                      });
+                    },
                   ),
                   SizedBox(height: 10.0),
-                  TextField(
-                    controller: _distanceController,
-                    style: TextStyle(color: Colors.white),
+
+                  DropdownButtonFormField(
                     decoration: InputDecoration(
                       icon: Icon(
                         Icons.arrow_circle_right_outlined,
@@ -192,7 +263,42 @@ class _LogPageState extends State<LogPage> {
                         ),
                       ),
                     ),
+                    // style: TextStyle(
+                    //   color: Colors.white,
+                    // ),
+                    value: _selectedDistance,
+                    items: _distanceOptions.map((String distance) {
+                      return DropdownMenuItem<String>(
+                        value: distance,
+                        child: Text(distance),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedDistance = value;
+                      });
+                    },
                   ),
+
+                  // TextField(
+                  //   controller: _distanceController,
+                  //   style: TextStyle(color: Colors.white),
+                  //   decoration: InputDecoration(
+                  //     icon: Icon(
+                  //       Icons.arrow_circle_right_outlined,
+                  //       color: Colors.white,
+                  //     ),
+                  //     hintText: 'Distance',
+                  //     hintStyle: TextStyle(
+                  //       color: Colors.white,
+                  //     ),
+                  //     enabledBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(
+                  //         color: Colors.white,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(height: 10.0),
                 ],
               ),
