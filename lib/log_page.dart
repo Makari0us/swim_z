@@ -36,18 +36,21 @@ class _LogPageState extends State<LogPage> {
   ];
 
   final List<String> _distanceOptions = [
-    '50m',
-    '50y',
-    '100m',
-    '100y',
-    '200m',
-    '200y',
+    '50',
+    '100',
+    '200',
+  ];
+
+  final List<String> _unitOptions = [
+    'y',
+    'm',
   ];
 
   // String _selectedStroke = '';
   String? _selectedStroke;
 
   String? _selectedDistance;
+  String? _selectedUnit;
 
   void _getCurrentUser() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -68,12 +71,13 @@ class _LogPageState extends State<LogPage> {
           .doc(_currentUser.uid)
           .collection("Journal Entries");
 
-      await collectionReference.doc(_dateController.text).set({
+      // await collectionReference.doc(_dateController.text).set({
+      await collectionReference.add({
         'Date': _dateController.text.trim(),
         'Location': _locationController.text.trim(),
         // 'Details': _detailsController.text.trim(),
         'Strokes': _selectedStroke,
-        'Distance': _selectedDistance,
+        'Distance': '$_selectedDistance$_selectedUnit',
 
         'Results': _resultsController.text.trim(),
         'Goals': _goalsController.text.trim(),
@@ -88,6 +92,12 @@ class _LogPageState extends State<LogPage> {
 
       _resultsController.clear();
       _goalsController.clear();
+
+      setState(() {
+        _selectedStroke = null;
+        _selectedDistance = null;
+        _selectedUnit = null;
+      });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -229,9 +239,10 @@ class _LogPageState extends State<LogPage> {
                         ),
                       ),
                     ),
-                    // style: TextStyle(
-                    //   color: Colors.white,
-                    // ),
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    dropdownColor: Colors.blue,
                     value: _selectedStroke,
                     items: _strokeOptions.map((String stroke) {
                       return DropdownMenuItem<String>(
@@ -247,37 +258,112 @@ class _LogPageState extends State<LogPage> {
                   ),
                   SizedBox(height: 10.0),
 
-                  DropdownButtonFormField(
-                    decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.arrow_circle_right_outlined,
-                        color: Colors.white,
-                      ),
-                      hintText: 'Distance',
-                      hintStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white,
+                  // DropdownButtonFormField(
+                  //   decoration: InputDecoration(
+                  //     icon: Icon(
+                  //       Icons.arrow_circle_right_outlined,
+                  //       color: Colors.white,
+                  //     ),
+                  //     hintText: 'Distance',
+                  //     hintStyle: TextStyle(
+                  //       color: Colors.white,
+                  //     ),
+                  //     enabledBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(
+                  //         color: Colors.white,
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   style: TextStyle(
+                  //     color: Colors.white,
+                  //   ),
+                  //   dropdownColor: Colors.blue,
+                  //   value: _selectedDistance,
+                  //   items: _distanceOptions.map((String distance) {
+                  //     return DropdownMenuItem<String>(
+                  //       value: distance,
+                  //       child: Text(distance),
+                  //     );
+                  //   }).toList(),
+                  //   onChanged: (value) {
+                  //     setState(() {
+                  //       _selectedDistance = value;
+                  //     });
+                  //   },
+                  // ),
+
+                  Row(
+                    children: [
+                      Container(
+                        width: 200.0,
+                        child: DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.arrow_circle_right_outlined,
+                              color: Colors.white,
+                            ),
+                            hintText: 'Distance',
+                            hintStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                          dropdownColor: Colors.blue,
+                          value: _selectedDistance,
+                          items: _distanceOptions.map((String distance) {
+                            return DropdownMenuItem<String>(
+                              value: distance,
+                              child: Text(distance),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedDistance = value;
+                            });
+                          },
                         ),
                       ),
-                    ),
-                    // style: TextStyle(
-                    //   color: Colors.white,
-                    // ),
-                    value: _selectedDistance,
-                    items: _distanceOptions.map((String distance) {
-                      return DropdownMenuItem<String>(
-                        value: distance,
-                        child: Text(distance),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedDistance = value;
-                      });
-                    },
+                      SizedBox(width: 10.0),
+                      Container(
+                        width: 75.0,
+                        child: DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            hintText: 'Unit',
+                            hintStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                          dropdownColor: Colors.blue,
+                          value: _selectedUnit,
+                          items: _unitOptions.map((String unit) {
+                            return DropdownMenuItem<String>(
+                              value: unit,
+                              child: Text(unit),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedUnit = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
 
                   // TextField(
@@ -314,7 +400,7 @@ class _LogPageState extends State<LogPage> {
               child: Column(
                 children: [
                   Text(
-                    'Results',
+                    'Workout Notes',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,

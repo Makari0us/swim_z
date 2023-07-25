@@ -1,24 +1,21 @@
-// ignore_for_file: prefer_const_constructors
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:swim_z/advice_page.dart';
-import 'package:swim_z/log_page.dart';
 import 'package:swim_z/nutrition_page.dart';
-
+import 'package:swim_z/profile_pagev2.dart';
 import 'package:swim_z/search_page.dart';
-import 'package:swim_z/bottom_navigation_bar.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+import 'bottom_navigation_bar.dart';
 
-  final String title;
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
+  String userUID = FirebaseAuth.instance.currentUser!.uid;
 
   void onTap(int index) {
     setState(() {
@@ -131,8 +128,12 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LogPage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfilePage(
+                                userID: userUID,
+                              )));
                 },
                 child: Stack(
                   children: [
