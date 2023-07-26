@@ -1,85 +1,144 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'user.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final String userID;
+
+  ProfilePage({required this.userID});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _ProfilePageState createState() => _ProfilePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // String name = '';
-  // int age = 0;
-  // String swimTeam = '';
-  // Map<String, String> bestTimes = {
-  //   '50 yard Freestyle': '',
-  //   '100 yard Freestyle': '',
-  //   '200 yard Freestyle': '',
-  //   '100 yard Butterfly': '',
-  //   '200 yard Butterfly': '',
-  // };
-  // String gender = '';
+  final picker = ImagePicker();
+  File? _profileImage;
 
-  final user = FirebaseAuth.instance.currentUser;
-  String? userName;
-  int age = 0;
-  String? swimTeam;
+  Future<void> _pickImage() async {
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _profileImage = File(pickedImage.path);
+        // Save the new image to Firebase Storage
+      });
+    }
+  }
 
-  String? userUID;
+  Future<UserProfile> _fetchUserData() async {
+    final userRef =
+        FirebaseFirestore.instance.collection('Users').doc(widget.userID);
+    final userData = await userRef.get();
+
+    if (userData.exists) {
+      return UserProfile.fromMap(
+          userData.data() as Map<String, dynamic>, userData.id);
+    } else {
+      return UserProfile(
+          id: widget.userID, name: '', age: null, swimTeam: null);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile Page'),
-      ),
-
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          // children: [SizedBox(height: 20.0), if (user != null) {}],
-        ),
-      ),
-
-      // body: Padding(
-      //   padding: const EdgeInsets.all(16.0),
-      //   child: ListView(
-      //     children: <Widget>[
-      //       TextField(
-      //         decoration: const InputDecoration(labelText: 'Name'),
-      //         onChanged: (value) {
-      //           setState(() {
-      //             name = value;
-      //           });
-      //         },
-      //       ),
-      //       const SizedBox(height: 10.0),
-      //       TextField(
-      //         decoration: const InputDecoration(labelText: 'Age'),
-      //         onChanged: (value) {
-      //           setState(() {
-      //             age = int.parse(value);
-      //           });
-      //         },
-      //         keyboardType: TextInputType.number,
-      //       ),
-      //       const SizedBox(height: 10.0),
-      //       TextField(
-      //         decoration: const InputDecoration(labelText: 'Swim Team'),
-      //         onChanged: (value) {
-      //           setState(() {
-      //             swimTeam = value;
-      //           });
-      //         },
-      //       ),
-      //     ]
-      //   )
-      // ),
+    return FutureBuilder<UserProfile>(
+      future: _fetchUserData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: $snapshot.error}');
+        } else {
+          final user = snapshot.data;
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Profile Page'),
+            ),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: _pickImage,
+                    child: CircleAvatar(
+                      radius: 70,
+                      backgroundImage: _profileImage != null
+                          ? FileImage(_profileImage!)
+                          : AssetImage(
+                                  'assets/images/default_profile_image.png')
+                              as ImageProvider<Object>,
+                    ),
+                  ),
+                  SizedBox(height: 30.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            'Name',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 5.0),
+                          Text('${user!.name}',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              )),
+                        ],
+                      ),
+                      SizedBox(width: 50.0),
+                      Column(
+                        children: [
+                          Text(
+                            'Age',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 5.0),
+                          Text('${user!.age.toString()}',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              )),
+                        ],
+                      ),
+                      SizedBox(width: 50.0),
+                      Column(
+                        children: [
+                          Text(
+                            'Swim Team',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 5.0),
+                          Text(
+                            '${user!.swimTeam}',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }

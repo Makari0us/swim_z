@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:swim_z/nutrition_page.dart';
-import 'package:swim_z/profile_pagev2.dart';
+import 'package:swim_z/profile_page.dart';
 import 'package:swim_z/search_page.dart';
 
 import 'bottom_navigation_bar.dart';
