@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:swim_z/login_page.dart';
+import 'package:swim_z/auth/login_page.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});

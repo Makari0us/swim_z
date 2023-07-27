@@ -3,9 +3,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:swim_z/log_page.dart';
+import 'package:swim_z/pages/home_page.dart';
+import 'package:swim_z/pages/log_page.dart';
 
-import 'home_page.dart';
 import 'signup_page.dart';
 
 class LoginPage extends StatefulWidget {
