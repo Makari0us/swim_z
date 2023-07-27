@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:swim_z/pages/environment_page.dart';
 import 'package:swim_z/pages/nutrition_page.dart';
 import 'package:swim_z/pages/profile_page.dart';
 import 'package:swim_z/pages/search_page.dart';
@@ -84,7 +85,7 @@ class _HomePageState extends State<HomePage> {
             buildSection('Injury', 'injury-icon.png',
                 Container()), // Replace 'Container()' with the actual injury page.
             buildSection('Environment', 'environment-icon.png',
-                Container()), // Replace 'Container()' with the actual environment page.
+                EnviromentPage()), // Replace 'Container()' with the actual environment page.
           ],
         ),
       ),
