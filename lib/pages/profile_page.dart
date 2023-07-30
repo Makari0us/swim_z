@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swim_z/pages/profile_settings_page.dart';
 import 'dart:io';
+import 'package:flutter/widgets.dart' show ImageProvider, FileImage;
 
 import 'package:swim_z/user.dart';
 
@@ -62,10 +63,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: CircleAvatar(
                       radius: 70,
                       backgroundImage: _profileImage != null
-                          ? FileImage(_profileImage!) as ImageProvider<File>?
+                          ? FileImage(_profileImage!) as ImageProvider<Object>?
                           : AssetImage(
-                                  'assets/images/default_profile_image.png')
-                              as ImageProvider<Object>?,
+                              'assets/images/default_profile_image.png'),
                     ),
                   ),
                   SizedBox(height: 30.0),
