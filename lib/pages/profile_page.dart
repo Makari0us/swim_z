@@ -6,7 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swim_z/pages/profile_settings_page.dart';
 import 'dart:io';
-import 'package:flutter/widgets.dart' show ImageProvider, FileImage;
+
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'package:swim_z/user.dart';
 
@@ -64,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       radius: 70,
                       backgroundImage: _profileImage != null
                           ? FileImage(_profileImage!) as ImageProvider<Object>?
-                          : AssetImage(
+                          : NetworkImage(user!.profilePictureUrl ??
                               'assets/images/default_profile_image.png'),
                     ),
                   ),
@@ -132,13 +133,33 @@ class _ProfilePageState extends State<ProfilePage> {
       });
 
       final imageFile = File(pickedImage.path);
-      // Save the new image to Firebase Storage
-      // Implement the upload logic here and update _profileImage once the upload is complete
 
-      setState(() {
-        _profileImage = imageFile;
-        _isUploadingImage = false;
-      });
+      final storageRef = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('Profile_Images')
+          .child(widget.userID);
+
+      try {
+        await storageRef.putFile(imageFile);
+        final downloadURL = await storageRef.getDownloadURL();
+
+        final userRef =
+            FirebaseFirestore.instance.collection('Users').doc(widget.userID);
+
+        await userRef.update({
+          'Profile Picture': downloadURL,
+        });
+
+        setState(() {
+          _profileImage = imageFile;
+          _isUploadingImage = false;
+        });
+      } catch (e) {
+        print('Error uploading image: $e');
+        setState(() {
+          _isUploadingImage = false;
+        });
+      }
     }
   }
 
