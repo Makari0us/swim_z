@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:swim_z/pages/profile_settings_page.dart';
 import 'dart:io';
 
 import 'package:swim_z/user.dart';
@@ -61,9 +62,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: CircleAvatar(
                       radius: 70,
                       backgroundImage: _profileImage != null
-                          ? FileImage(_profileImage!)
+                          ? FileImage(_profileImage!) as ImageProvider<File>?
                           : AssetImage(
-                              'assets/images/default_profile_image.png'),
+                                  'assets/images/default_profile_image.png')
+                              as ImageProvider<Object>?,
                     ),
                   ),
                   SizedBox(height: 30.0),
@@ -74,8 +76,23 @@ class _ProfilePageState extends State<ProfilePage> {
                       SizedBox(width: 50.0),
                       _buildInfoColumn('Age', '${user.age ?? "N/A"}'),
                       SizedBox(width: 50.0),
-                      _buildInfoColumn('Swim Team', '${user.swimTeam ?? "N/A"}'),
+                      _buildInfoColumn(
+                          'Swim Team', '${user.swimTeam ?? "N/A"}'),
                     ],
+                  ),
+                  SizedBox(height: 20.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditProfilePage(
+                            user: user,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text('Edit Profile'),
                   ),
                 ],
               ),
