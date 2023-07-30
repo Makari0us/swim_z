@@ -82,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   SizedBox(height: 20.0),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.push(
                         context,
                         MaterialPageRoute(

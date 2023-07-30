@@ -16,7 +16,7 @@ class UserProfile {
       id: id,
       name: map['Name'] ?? '',
       age: map['Age'],
-      swimTeam: map['Team'],
+      swimTeam: map['Swim Team'],
     );
   }
 }
