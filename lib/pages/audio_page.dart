@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 class AudioPage extends StatefulWidget {
   const AudioPage({super.key});
@@ -8,8 +13,92 @@ class AudioPage extends StatefulWidget {
 }
 
 class _AudioPageState extends State<AudioPage> {
+  late List<String> audioFiles;
+  late AudioPlayer audioPlayer;
+  late AudioCache audioCache;
+
+  @override
+  void initState() {
+    super.initState();
+    audioPlayer = AudioPlayer();
+    audioCache = AudioCache();
+    audioFiles = [];
+    initializeFirebaseApp();
+    fetchAudioFiles();
+  }
+
+  Future<void> initializeFirebaseApp() async {
+    await Firebase.initializeApp();
+  }
+
+  Future<void> fetchAudioFiles() async {
+    try {
+      Reference storageRef = FirebaseStorage.instance.ref().child('Audios');
+      ListResult result = await storageRef.listAll();
+
+      List<String> files = [];
+      for (var item in result.items) {
+        files.add(item.name);
+      }
+
+      setState(() {
+        audioFiles = files;
+      });
+    } catch (e) {
+      print('Error fetching audio files: $e');
+    }
+  }
+
+  // Future<void> playAudio(String audioFileName) async {
+  //   audioPlayer.stop();
+  //   String audioFilePath = await loadAudioToLocalCache(audioFileName);
+  //   int result = await audioPlayer.play(audioFilePath, isLocal: true);
+
+  //   if (result == 1) {
+  //     print('Audio playing');
+  //   } else {
+  //     print('Error playing audio');
+  //   }
+  // }
+
+  // Future<String> loadAudioToLocalCache(String audioFileName) async {
+  //   Directory tempDir = await getTemporaryDirectory();
+  //   String tempPath = tempDir.path;
+  //   File audioFile = File('$tempPath/$audioFileName');
+
+  //   if (!audioFile.existsSync()) {
+  //     String url = await audioCache.load(audioFileName);
+  //     final response = await HttpClient().getUrl(Uri.parse(url));
+  //     final bytes = await response.close();
+  //     await audioFile.writeAsBytes(await bytes.toList());
+  //   }
+  //   return audioFile.path;
+  // }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Audio'),
+      ),
+      body: audioFiles.isEmpty
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: audioFiles.length,
+              itemBuilder: (context, index) {
+                final audioFileName = audioFiles[index];
+                return ListTile(
+                  title: Text(audioFileName),
+                  // onTap: () => playAudio(audioFileName),
+                );
+              },
+            ),
+    );
   }
 }

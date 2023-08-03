@@ -44,6 +44,7 @@ dependencies:
   location: ^5.0.1
   firebase_storage: ^11.2.5
   path_provider: ^2.0.15
+  audioplayers: ^5.0.0
 
 dev_dependencies:
   flutter_test:
