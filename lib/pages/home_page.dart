@@ -4,6 +4,9 @@ import 'package:swim_z/pages/environment_page.dart';
 import 'package:swim_z/pages/nutrition_page.dart';
 import 'package:swim_z/pages/profile_page.dart';
 import 'package:swim_z/pages/search_page.dart';
+import 'package:swim_z/pages/stress_page.dart';
+
+import 'log_page.dart';
 
 // import 'bottom_navigation_bar.dart';
 
@@ -80,12 +83,14 @@ class _HomePageState extends State<HomePage> {
           children: [
             buildSection('Advice', 'advice-icon.png', SearchPage()),
             buildSection('Nutrition', 'anxiety-icon.png', NutritionPage()),
-            buildSection('Log Page (Temp)', 'anxiety-icon.png',
+            buildSection('Log Page', 'anxiety-icon.png', LogPage()),
+            buildSection('Profile Page', 'anxiety-icon.png',
                 ProfilePage(userID: userUID)),
             buildSection('Injury', 'injury-icon.png',
                 Container()), // Replace 'Container()' with the actual injury page.
-            buildSection('Environment', 'environment-icon.png',
-                EnviromentPage()), // Replace 'Container()' with the actual environment page.
+            buildSection(
+                'Environment', 'environment-icon.png', EnviromentPage()),
+            buildSection('Stress', 'advice-icon.png', StressPage()),
           ],
         ),
       ),
