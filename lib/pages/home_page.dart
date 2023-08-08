@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:swim_z/pages/assistant_page.dart';
 import 'package:swim_z/pages/environment_page.dart';
 import 'package:swim_z/pages/nutrition_page.dart';
 import 'package:swim_z/pages/profile_page.dart';
@@ -81,7 +82,7 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            buildSection('Advice', 'advice-icon.png', SearchPage()),
+            buildSection('Advice', 'advice-icon.png', AssistantPage()),
             buildSection('Nutrition', 'anxiety-icon.png', NutritionPage()),
             buildSection('Log Page', 'anxiety-icon.png', LogPage()),
             buildSection('Profile Page', 'anxiety-icon.png',
