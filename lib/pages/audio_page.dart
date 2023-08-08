@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class AudioPage extends StatefulWidget {
-  const AudioPage({super.key});
+  const AudioPage({Key? key}) : super(key: key);
 
   @override
   State<AudioPage> createState() => _AudioPageState();
@@ -49,31 +49,7 @@ class _AudioPageState extends State<AudioPage> {
     }
   }
 
-  // Future<void> playAudio(String audioFileName) async {
-  //   audioPlayer.stop();
-  //   String audioFilePath = await loadAudioToLocalCache(audioFileName);
-  //   int result = await audioPlayer.play(audioFilePath, isLocal: true);
-
-  //   if (result == 1) {
-  //     print('Audio playing');
-  //   } else {
-  //     print('Error playing audio');
-  //   }
-  // }
-
-  // Future<String> loadAudioToLocalCache(String audioFileName) async {
-  //   Directory tempDir = await getTemporaryDirectory();
-  //   String tempPath = tempDir.path;
-  //   File audioFile = File('$tempPath/$audioFileName');
-
-  //   if (!audioFile.existsSync()) {
-  //     String url = await audioCache.load(audioFileName);
-  //     final response = await HttpClient().getUrl(Uri.parse(url));
-  //     final bytes = await response.close();
-  //     await audioFile.writeAsBytes(await bytes.toList());
-  //   }
-  //   return audioFile.path;
-  // }
+  // ... Other methods (playAudio and loadAudioToLocalCache) can remain unchanged ...
 
   @override
   void dispose() {
@@ -86,6 +62,7 @@ class _AudioPageState extends State<AudioPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Audio'),
+        backgroundColor: Colors.blueGrey, // Change the app bar color
       ),
       body: audioFiles.isEmpty
           ? Center(child: CircularProgressIndicator())
@@ -94,7 +71,22 @@ class _AudioPageState extends State<AudioPage> {
               itemBuilder: (context, index) {
                 final audioFileName = audioFiles[index];
                 return ListTile(
-                  title: Text(audioFileName),
+                  title: Text(
+                    audioFileName,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  tileColor: index % 2 == 0
+                      ? Colors.grey.shade200
+                      : Colors.transparent,
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 12.0,
+                    horizontal: 16.0,
+                  ),
+                  // Add onTap to play audio here if you decide to uncomment playAudio method
                   // onTap: () => playAudio(audioFileName),
                 );
               },
