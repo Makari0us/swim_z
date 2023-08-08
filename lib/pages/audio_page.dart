@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 
 class AudioPage extends StatefulWidget {
   const AudioPage({Key? key}) : super(key: key);
