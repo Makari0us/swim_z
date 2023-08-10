@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _passwordInvisible = true;
 
-  void _onPressed() async {
+  void _login() async {
     try {
       final UserCredential userCredential =
           await _auth.signInWithEmailAndPassword(
@@ -75,15 +75,30 @@ class _LoginPageState extends State<LoginPage> {
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
-                labelText: 'Email',
-                // filled: true,
-                // fillColor: Colors.white,
-                prefixIcon: Icon(Icons.email_outlined),
-                border: OutlineInputBorder(
+                hintText: 'Email',
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.7),
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  color: Colors.blue[800],
+                ),
+                enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(20.0),
                   ),
-                  borderSide: BorderSide(width: 50.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue[800]!,
+                    width: 2.0,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20.0),
+                  ),
+                  borderSide: BorderSide(
+                    color: Colors.blue[800]!,
+                    width: 3.0,
+                  ),
                 ),
               ),
             ),
@@ -91,16 +106,19 @@ class _LoginPageState extends State<LoginPage> {
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
-                labelText: 'Password',
-                // filled: true,
-                // fillColor: Colors.white,
-                prefixIcon: Icon(Icons.lock_outline),
+                hintText: 'Password',
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.7),
+                prefixIcon: Icon(
+                  Icons.lock_outline,
+                  color: Colors.blue[800],
+                ),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _passwordInvisible
                         ? Icons.visibility_off
                         : Icons.visibility,
-                    color: Theme.of(context).primaryColorDark,
+                    color: Colors.blue[800],
                   ),
                   onPressed: () {
                     setState(() {
@@ -108,18 +126,49 @@ class _LoginPageState extends State<LoginPage> {
                     });
                   },
                 ),
-                border: OutlineInputBorder(
+                enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(20.0),
+                  ),
+                  borderSide: BorderSide(
+                    color: Colors.blue[800]!,
+                    width: 2.0,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20.0),
+                  ),
+                  borderSide: BorderSide(
+                    color: Colors.blue[800]!,
+                    width: 3.0,
                   ),
                 ),
               ),
               obscureText: _passwordInvisible,
             ),
             SizedBox(height: 40.0),
+            // ElevatedButton(
+            //   onPressed: _login,
+            //   child: Text('Login Here'),
+            // ),
             ElevatedButton(
-              onPressed: _onPressed,
-              child: Text('Login Here'),
+              onPressed: _login,
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue[800],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
+              ),
+              child: Text(
+                'Login',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             ),
             SizedBox(height: 30.0),
             RichText(
