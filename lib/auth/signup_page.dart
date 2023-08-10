@@ -83,167 +83,171 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/login-bg.jpg'),
-            fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/water-bg.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        padding: EdgeInsets.all(30.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Create Account',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue[900],
-              ),
-            ),
-            SizedBox(height: 40.0),
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                hintText: 'Name',
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.7),
-                prefixIcon: Icon(
-                  Icons.person_2_outlined,
+          padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 170.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Create Account',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
                   color: Colors.blue[800],
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20.0),
-                  ),
-                  borderSide: BorderSide(
-                    color: Colors.blue[800]!,
-                    width: 2.0,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20.0),
-                  ),
-                  borderSide: BorderSide(
-                    color: Colors.blue[800]!,
-                    width: 3.0,
-                  ),
-                ),
               ),
-            ),
-            SizedBox(height: 20.0),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                hintText: 'Email',
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.7),
-                prefixIcon: Icon(
-                  Icons.email_outlined,
-                  color: Colors.blue[800],
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20.0),
-                  ),
-                  borderSide: BorderSide(
-                    color: Colors.blue[800]!,
-                    width: 2.0,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20.0),
-                  ),
-                  borderSide: BorderSide(
-                    color: Colors.blue[800]!,
-                    width: 3.0,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 20.0),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                hintText: 'Password',
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.7),
-                prefixIcon: Icon(
-                  Icons.lock_outline,
-                  color: Colors.blue[800],
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _passwordInvisible
-                        ? Icons.visibility_off
-                        : Icons.visibility,
+              SizedBox(height: 40.0),
+              TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  hintText: 'Name',
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.7),
+                  prefixIcon: Icon(
+                    Icons.person_2_outlined,
                     color: Colors.blue[800],
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _passwordInvisible = !_passwordInvisible;
-                    });
-                  },
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20.0),
-                  ),
-                  borderSide: BorderSide(
-                    color: Colors.blue[800]!,
-                    width: 2.0,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20.0),
-                  ),
-                  borderSide: BorderSide(
-                    color: Colors.blue[800]!,
-                    width: 3.0,
-                  ),
-                ),
-              ),
-              obscureText: _passwordInvisible,
-            ),
-            SizedBox(height: 40.0),
-            ElevatedButton(
-              onPressed: _registerAccount,
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue[800],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
-              ),
-              child: Text(
-                'Sign Up',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(height: 30.0),
-            RichText(
-              text: TextSpan(
-                text: 'Have an account already? ',
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Login',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20.0),
                     ),
-                    recognizer: TapGestureRecognizer()..onTap = _goToLoginPage,
+                    borderSide: BorderSide(
+                      color: Colors.blue[800]!,
+                      width: 2.0,
+                    ),
                   ),
-                ],
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20.0),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.blue[800]!,
+                      width: 3.0,
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: 20.0),
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  hintText: 'Email',
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.7),
+                  prefixIcon: Icon(
+                    Icons.email_outlined,
+                    color: Colors.blue[800],
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20.0),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.blue[800]!,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20.0),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.blue[800]!,
+                      width: 3.0,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.0),
+              TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.7),
+                  prefixIcon: Icon(
+                    Icons.lock_outline,
+                    color: Colors.blue[800],
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _passwordInvisible
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: Colors.blue[800],
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _passwordInvisible = !_passwordInvisible;
+                      });
+                    },
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20.0),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.blue[800]!,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20.0),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.blue[800]!,
+                      width: 3.0,
+                    ),
+                  ),
+                ),
+                obscureText: _passwordInvisible,
+              ),
+              SizedBox(height: 40.0),
+              ElevatedButton(
+                onPressed: _registerAccount,
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue[800],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
+                ),
+                child: Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(height: 30.0),
+              RichText(
+                text: TextSpan(
+                  text: 'Have an account already? ',
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Login',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = _goToLoginPage,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
