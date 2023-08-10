@@ -19,14 +19,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // int currentIndex = 0;
   String userUID = FirebaseAuth.instance.currentUser!.uid;
-
-  // void onTap(int index) {
-  //   setState(() {
-  //     currentIndex = index;
-  //   });
-  // }
 
   Widget buildSection(String title, String imageAsset, Widget page) {
     return Padding(
@@ -82,11 +75,11 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            buildSection('Advice', 'advice-icon.png', AssistantPage()),
+            // buildSection('Advice', 'advice-icon.png', AssistantPage()),
             buildSection('Nutrition', 'anxiety-icon.png', NutritionPage()),
-            buildSection('Log Page', 'anxiety-icon.png', LogPage()),
-            buildSection('Profile Page', 'anxiety-icon.png',
-                ProfilePage(userID: userUID)),
+            // buildSection('Log Page', 'anxiety-icon.png', LogPage()),
+            // buildSection('Profile Page', 'anxiety-icon.png',
+            //     ProfilePage(userID: userUID)),
             buildSection('Injury', 'injury-icon.png',
                 Container()), // Replace 'Container()' with the actual injury page.
             buildSection(
@@ -95,10 +88,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      // bottomNavigationBar: BottomNavBar(
-      //   currentIndex: currentIndex,
-      //   onTap: onTap,
-      // ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:swim_z/pages/journal_page.dart';
 import 'package:swim_z/pages/log_page.dart';
 import 'package:swim_z/pages/nutrition_page.dart';
 import 'package:swim_z/pages/profile_page.dart';
+import 'package:swim_z/pages/stress_page.dart';
 
 class RoutePage extends StatefulWidget {
   const RoutePage({super.key});
@@ -16,20 +17,28 @@ class RoutePage extends StatefulWidget {
 
 class _RoutePageState extends State<RoutePage> {
   int _currentIndex = 0;
+  final PageController _pageController = PageController();
 
   final List<Widget> _pages = [
     HomePage(),
     LogPage(),
     AssistantPage(),
     ProfilePage(userID: FirebaseAuth.instance.currentUser!.uid),
-    JournalPage(),
-    NutritionPage(),
+    StressPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
+      body: PageView(
+        controller: _pageController,
+        children: _pages,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.blue,
         selectedItemColor: Colors.blue[900],
@@ -37,9 +46,11 @@ class _RoutePageState extends State<RoutePage> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
+          _pageController.animateToPage(
+            index,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
         },
         items: const [
           BottomNavigationBarItem(
