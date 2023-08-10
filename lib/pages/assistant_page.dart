@@ -14,9 +14,9 @@ class _AssistantPageState extends State<AssistantPage> {
   List<String> _chatHistory = [];
 
   Future<String> _getChatResponse(String input) async {
-    final apiKey = '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';
-    final model = 'gpt-3.5-turbo-0613';
-    final apiEndpoint = 'https://api.openai.com//v1/chat/completions';
+    final apiKey = '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';
+    final model = 'gpt-3.5-turbo';
+    final apiEndpoint = 'https://api.openai.com/v1/chat/completions';
 
     final response = await http.post(
       Uri.parse(apiEndpoint),
@@ -49,6 +49,10 @@ class _AssistantPageState extends State<AssistantPage> {
       setState(() {
         _chatHistory.add('ChatGPT: $response');
       });
+    }).catchError((error) {
+      setState(() {
+        _chatHistory.add('Error: $error');
+      });
     });
 
     _inputController.clear();
@@ -66,9 +70,34 @@ class _AssistantPageState extends State<AssistantPage> {
             child: ListView.builder(
               itemCount: _chatHistory.length,
               itemBuilder: (context, index) {
+                final chat = _chatHistory[index];
+                final label = chat.contains(':')
+                    ? chat.substring(0, chat.indexOf(':') + 1)
+                    : '';
+                final message = chat.contains(':')
+                    ? chat.substring(chat.indexOf(':') + 1)
+                    : chat;
+
+                TextStyle labelStyle = TextStyle(
+                  fontSize: 18, // Adjust the font size as needed
+                  fontWeight: FontWeight.bold,
+                );
+
+                TextStyle messageStyle = TextStyle(
+                  fontSize: 18, // Adjust the font size as needed
+                );
+
                 return Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Text(_chatHistory[index]),
+                  child: RichText(
+                    text: TextSpan(
+                      style: DefaultTextStyle.of(context).style,
+                      children: <TextSpan>[
+                        TextSpan(text: label, style: labelStyle),
+                        TextSpan(text: message, style: messageStyle),
+                      ],
+                    ),
+                  ),
                 );
               },
             ),
