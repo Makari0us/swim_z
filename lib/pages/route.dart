@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:swim_z/pages/assistant_page.dart';
 import 'package:swim_z/pages/home_page.dart';
@@ -20,6 +21,7 @@ class _RoutePageState extends State<RoutePage> {
     HomePage(),
     LogPage(),
     AssistantPage(),
+    ProfilePage(userID: FirebaseAuth.instance.currentUser!.uid),
     JournalPage(),
     NutritionPage(),
   ];
