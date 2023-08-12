@@ -6,10 +6,7 @@ import 'package:swim_z/pages/nutrition_page.dart';
 import 'package:swim_z/pages/profile_page.dart';
 import 'package:swim_z/pages/search_page.dart';
 import 'package:swim_z/pages/stress_page.dart';
-
 import 'log_page.dart';
-
-// import 'bottom_navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,46 +18,70 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String userUID = FirebaseAuth.instance.currentUser!.uid;
 
-  Widget buildSection(String title, String imageAsset, Widget page) {
+  // Widget buildSection(String title, String imageAsset, String bgImageAsset, Widget page) {
+  Widget buildSection(String title, String bgImageAsset, Widget page) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => page));
+            context,
+            MaterialPageRoute(builder: (context) => page),
+          );
         },
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: Container(
-                height: 100,
-                color: Colors.blue,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                offset: Offset(2.0, 2.0),
+                blurRadius: 5.0,
               ),
-            ),
-            Positioned(
-              bottom: 5.0,
-              right: 15.0,
-              child: Text(
-                title,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 40.0,
-                  fontWeight: FontWeight.bold,
+            ],
+          ),
+          child: Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Image.asset(
+                  'assets/images/$bgImageAsset', // Background image
+                  height: 100,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
               ),
-            ),
-            Positioned(
-              top: 10.0,
-              left: 10.0,
-              child: Image.asset(
-                'assets/images/$imageAsset',
-                height: 70.0,
-                width: 70.0,
-                fit: BoxFit.cover,
+              Positioned(
+                bottom: 5.0,
+                left: 15.0,
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold,
+                    shadows: <Shadow>[
+                      Shadow(
+                        offset: Offset(2.0, 2.0),
+                        blurRadius: 3.0,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ],
+              // Positioned(
+              //   top: 10.0,
+              //   left: 10.0,
+              //   child: Image.asset(
+              //     'assets/images/$imageAsset',
+              //     height: 70.0,
+              //     width: 70.0,
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
+            ],
+          ),
         ),
       ),
     );
@@ -69,22 +90,20 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // buildSection('Advice', 'advice-icon.png', AssistantPage()),
-            buildSection('Nutrition', 'anxiety-icon.png', NutritionPage()),
-            // buildSection('Log Page', 'anxiety-icon.png', LogPage()),
-            // buildSection('Profile Page', 'anxiety-icon.png',
-            //     ProfilePage(userID: userUID)),
-            buildSection('Injury', 'injury-icon.png',
-                Container()), // Replace 'Container()' with the actual injury page.
+            // buildSection('Nutrition', 'anxiety-icon.png', 'nutrition-bg.jpg',
+            //     NutritionPage()),
+            // buildSection('Environment', 'environment-icon.png',
+            //     'environment-bg.jpg', EnvironmentPage()),
+            // buildSection(
+            //     'Stress', 'advice-icon.png', 'stress-bg.jpg', StressPage()),
+
+            buildSection('Nutrition', 'nutrition2-bg.jpg', NutritionPage()),
             buildSection(
-                'Environment', 'environment-icon.png', EnviromentPage()),
-            buildSection('Stress', 'advice-icon.png', StressPage()),
+                'Environment', 'environment-bg.jpg', EnvironmentPage()),
+            buildSection('Stress', 'stress-bg.jpg', StressPage()),
           ],
         ),
       ),

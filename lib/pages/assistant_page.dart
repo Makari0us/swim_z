@@ -61,9 +61,6 @@ class _AssistantPageState extends State<AssistantPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Assistant'),
-      ),
       body: Column(
         children: [
           Expanded(

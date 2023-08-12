@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
-class EnviromentPage extends StatefulWidget {
-  const EnviromentPage({super.key});
+class EnvironmentPage extends StatefulWidget {
+  const EnvironmentPage({super.key});
 
   @override
-  State<EnviromentPage> createState() => _EnviromentPageState();
+  State<EnvironmentPage> createState() => _EnvironmentPageState();
 }
 
-class _EnviromentPageState extends State<EnviromentPage> {
+class _EnvironmentPageState extends State<EnvironmentPage> {
   GoogleMapController? _mapController;
   LocationData? _currentLocation;
   Location _location = Location();

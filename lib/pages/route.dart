@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:swim_z/pages/assistant_page.dart';
+import 'package:swim_z/pages/environment_page.dart';
 import 'package:swim_z/pages/home_page.dart';
 import 'package:swim_z/pages/journal_page.dart';
 import 'package:swim_z/pages/log_page.dart';
@@ -24,12 +25,32 @@ class _RoutePageState extends State<RoutePage> {
     LogPage(),
     AssistantPage(),
     ProfilePage(userID: FirebaseAuth.instance.currentUser!.uid),
-    StressPage(),
+    // NutritionPage(),
+    // Container(),
+    // EnvironmentPage(),
+    // StressPage(),
+  ];
+
+  final List<String> _pageTitles = [
+    'Home',
+    'Log',
+    'Assistant',
+    'Profile',
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          _pageTitles[_currentIndex],
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.blue,
+      ),
       body: PageView(
         controller: _pageController,
         children: _pages,

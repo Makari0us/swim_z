@@ -32,18 +32,12 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text('Profile'),
-            ),
             body: Center(
               child: CircularProgressIndicator(),
             ),
           );
         } else if (snapshot.hasError) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text('Profile'),
-            ),
             body: Center(
               child: Text('Error: ${snapshot.error}'),
             ),
@@ -51,9 +45,6 @@ class _ProfilePageState extends State<ProfilePage> {
         } else {
           final user = snapshot.data;
           return Scaffold(
-            appBar: AppBar(
-              title: Text('Profile'),
-            ),
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -116,9 +116,6 @@ class _LogPageState extends State<LogPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Journal"),
-      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.0),
         child: Column(
