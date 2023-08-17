@@ -89,6 +89,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    String userName = FirebaseAuth.instance.currentUser!.displayName;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(

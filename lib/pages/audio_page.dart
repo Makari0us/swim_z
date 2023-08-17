@@ -6,10 +6,10 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class AudioPage extends StatefulWidget {
-  const AudioPage({super.key});
+  const AudioPage({Key? key}) : super(key: key);
 
   @override
-  State<AudioPage> createState() => _AudioPageState();
+  _AudioPageState createState() => _AudioPageState();
 }
 
 class _AudioPageState extends State<AudioPage> {
@@ -36,10 +36,7 @@ class _AudioPageState extends State<AudioPage> {
       Reference storageRef = FirebaseStorage.instance.ref().child('Audios');
       ListResult result = await storageRef.listAll();
 
-      List<String> files = [];
-      for (var item in result.items) {
-        files.add(item.name);
-      }
+      List<String> files = result.items.map((item) => item.name).toList();
 
       setState(() {
         audioFiles = files;
@@ -48,71 +45,6 @@ class _AudioPageState extends State<AudioPage> {
       print('Error fetching audio files: $e');
     }
   }
-
-  // void playAudio(String audioFileName) async {
-  //   try {
-  //     String downloadUrl = await FirebaseStorage.instance
-  //         .ref()
-  //         .child('Audios/$audioFileName')
-  //         .getDownloadURL();
-
-  //     // Use audioPlayer to play audio from URL
-  //     int result = await audioPlayer.play(downloadUrl);
-
-  //     if (result == 1) {
-  //       print('Audio played');
-  //     } else {
-  //       print('Error playing audio');
-  //     }
-  //   } catch (e) {
-  //     print('Error playing audio');
-  //   }
-  // }
-
-  // Future<void> playAudio(String audioFileName) async {
-  //   audioPlayer.stop();
-  //   String audioFilePath = await loadAudioToLocalCache(audioFileName);
-  //   int result = await audioPlayer.play(audioFilePath, isLocal: true);
-
-  //   if (result == 1) {
-  //     print('Audio playing');
-  //   } else {
-  //     print('Error playing audio');
-  //   }
-  // }
-
-  // Future<String> loadAudioToLocalCache(String audioFileName) async {
-  //   Directory tempDir = await getTemporaryDirectory();
-  //   String tempPath = tempDir.path;
-  //   File audioFile = File('$tempPath/$audioFileName');
-
-  //   if (!audioFile.existsSync()) {
-  //     String url = await audioCache.load(audioFileName);
-  //     final response = await HttpClient().getUrl(Uri.parse(url));
-  //     final bytes = await response.close();
-  //     await audioFile.writeAsBytes(await bytes.toList());
-  //   }
-  //   return audioFile.path;
-  // }
-
-  // Future<void> playAudio(String audioFileName) async {
-  //   try {
-  //     Reference audioRef =
-  //         FirebaseStorage.instance.ref().child('Audios/$audioFileName');
-
-  //     // Download the audio file to temp directory
-  //     Directory tempDir = await getTemporaryDirectory();
-  //     File tempFile = File('${tempDir.path}/$audioFileName');
-  //     if (!tempFile.existsSync()) {
-  //       await audioRef.writeToFile(tempFile);
-  //     }
-
-  //     // Play audio file with AudioCache
-  //     await audioCache.play(tempFile.path);
-  //   } catch (e) {
-  //     print('Error playing audio: $e');
-  //   }
-  // }
 
   @override
   void dispose() {
@@ -124,20 +56,47 @@ class _AudioPageState extends State<AudioPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Audio'),
+        title: Text(
+          'Audio Player',
+          style: TextStyle(fontSize: 24),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
       ),
-      body: audioFiles.isEmpty
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: audioFiles.length,
-              itemBuilder: (context, index) {
-                final audioFileName = audioFiles[index];
-                return ListTile(
-                  title: Text(audioFileName),
-                  // onTap: () => playAudio(audioFileName),
-                );
-              },
-            ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: audioFiles.isEmpty
+            ? Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: audioFiles.length,
+                itemBuilder: (context, index) {
+                  final audioFileName = audioFiles[index];
+                  return Card(
+                    elevation: 4,
+                    margin: EdgeInsets.symmetric(vertical: 8),
+                    child: ListTile(
+                      title: Text(
+                        audioFileName,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      onTap: () => playAudio(audioFileName),
+                    ),
+                  );
+                },
+              ),
+      ),
     );
   }
+
+  Future<void> playAudio(String audioFileName) async {
+    // Implement your audio playing logic here
+  }
+}
+
+void main() {
+  runApp(MaterialApp(
+    title: 'Audio Player',
+    theme: ThemeData(primarySwatch: Colors.blue),
+    home: AudioPage(),
+  ));
 }
