@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:swim_z/auth/login_page.dart';
 import 'package:swim_z/pages/assistant_page.dart';
 import 'package:swim_z/pages/environment_page.dart';
 import 'package:swim_z/pages/home_page.dart';
@@ -38,6 +39,15 @@ class _RoutePageState extends State<RoutePage> {
     'Profile',
   ];
 
+  Future<void> _logOut() async{
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()),);
+    } catch (e) {
+      print ('Error loging out: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +59,9 @@ class _RoutePageState extends State<RoutePage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          IconButton(onPressed: _logOut, icon: Icon(Icons.logout, color: Colors.white,),),
+        ],
         backgroundColor: Colors.blue,
       ),
       body: PageView(
