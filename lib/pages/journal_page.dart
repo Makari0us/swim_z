@@ -11,6 +11,8 @@ class JournalPage extends StatefulWidget {
 
 class _JournalPageState extends State<JournalPage> {
   late User _currentUser;
+  TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
   void _getCurrentUser() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -32,64 +34,106 @@ class _JournalPageState extends State<JournalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection("Users")
-            .doc(_currentUser.uid)
-            .collection("Journal Entries")
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return _buildErrorMessage();
-          }
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+        title: Text(
+          'Journal Entries',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.blue,
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(10.0),
+            child: TextField(
+              controller: _searchController,
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value;
+                });
+              },
+              decoration: InputDecoration(
+                hintText: 'Search by Date',
+                prefixIcon: Icon(Icons.search),
+              ),
+            ),
+          ),
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(_currentUser.uid)
+                  .collection("Journal Entries")
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return _buildErrorMessage();
+                }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return _buildLoadingIndicator();
-          }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return _buildLoadingIndicator();
+                }
 
-          final data = snapshot.data;
-          if (data == null || data.docs.isEmpty) {
-            return _buildNoEntriesMessage();
-          }
+                final data = snapshot.data;
+                if (data == null || data.docs.isEmpty) {
+                  return _buildNoEntriesMessage();
+                }
 
-          return ListView.builder(
-            itemCount: data.docs.length,
-            itemBuilder: (context, index) {
-              final doc = data.docs[index];
-              final date = doc['Date'] as String;
-              final location = doc['Location'] as String;
-              final strokes = doc['Strokes'] as String;
-              final distance = doc['Distance'] as String;
-              final results = doc['Results'] as String;
-              final goals = doc['Goals'] as String;
+                final filteredData = data.docs.where(
+                    (doc) => (doc['Date'] as String).contains(_searchQuery));
 
-              return Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: Card(
-                  elevation: 2,
-                  child: ExpansionTile(
-                    title: Text(date),
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                if (filteredData.isEmpty) {
+                  return _buildNoEntriesMessage();
+                }
+
+                return ListView.builder(
+                  itemCount: filteredData.length,
+                  itemBuilder: (context, index) {
+                    final doc = filteredData.elementAt(index);
+                    final date = doc['Date'] as String;
+                    final location = doc['Location'] as String;
+                    final strokes = doc['Strokes'] as String;
+                    final distance = doc['Distance'] as String;
+                    final results = doc['Results'] as String;
+                    final goals = doc['Goals'] as String;
+
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                      child: Card(
+                        elevation: 2,
+                        child: ExpansionTile(
+                          title: Text(date),
                           children: [
-                            _buildDetailText('Location', location),
-                            _buildDetailText('Strokes', strokes),
-                            _buildDetailText('Distance', distance),
-                            _buildDetailText('Results', results),
-                            _buildDetailText('Goals', goals),
+                            Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  _buildDetailText('Location', location),
+                                  _buildDetailText('Strokes', strokes ?? 'N/A'),
+                                  _buildDetailText('Distance', distance),
+                                  _buildDetailText('Results', results),
+                                  _buildDetailText('Goals', goals),
+                                ],
+                              ),
+                            )
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        },
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

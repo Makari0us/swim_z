@@ -39,12 +39,14 @@ class _RoutePageState extends State<RoutePage> {
     'Profile',
   ];
 
-  Future<void> _logOut() async{
+  Future<void> _logOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()),);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
     } catch (e) {
-      print ('Error loging out: $e');
+      print('Error loging out: $e');
     }
   }
 
@@ -52,6 +54,9 @@ class _RoutePageState extends State<RoutePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
         title: Text(
           _pageTitles[_currentIndex],
           style: TextStyle(
@@ -60,7 +65,13 @@ class _RoutePageState extends State<RoutePage> {
           ),
         ),
         actions: [
-          IconButton(onPressed: _logOut, icon: Icon(Icons.logout, color: Colors.white,),),
+          IconButton(
+            onPressed: _logOut,
+            icon: Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+          ),
         ],
         backgroundColor: Colors.blue,
       ),
@@ -80,11 +91,12 @@ class _RoutePageState extends State<RoutePage> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         onTap: (index) {
-          _pageController.animateToPage(
-            index,
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
+          _pageController.jumpToPage(index);
+          // _pageController.animateToPage(
+          //   index,
+          //   duration: Duration(milliseconds: 300),
+          //   curve: Curves.easeInOut,
+          // );
         },
         items: const [
           BottomNavigationBarItem(
