@@ -16,7 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String userUID = FirebaseAuth.instance.currentUser!.uid;
 
   // Widget buildSection(String title, String imageAsset, String bgImageAsset, Widget page) {
   Widget buildSection(String title, String bgImageAsset, Widget page) {
@@ -89,7 +88,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    String userName = FirebaseAuth.instance.currentUser!.displayName;
+    String? userName = FirebaseAuth.instance.currentUser!.displayName;
 
     return Scaffold(
       body: SingleChildScrollView(
