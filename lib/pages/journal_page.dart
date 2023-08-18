@@ -85,8 +85,16 @@ class _JournalPageState extends State<JournalPage> {
                   return _buildNoEntriesMessage();
                 }
 
-                final filteredData = data.docs.where(
-                    (doc) => (doc['Date'] as String).contains(_searchQuery));
+                // final filteredData = data.docs.where(
+                //     (doc) => (doc['Date'] as String).contains(_searchQuery));
+
+                final filteredData = data.docs.where((doc) {
+                  final entryText =
+                      "${doc['Date']} ${doc['Location']} ${doc['Strokes']} ${doc['Distance']} ${doc['Results']} ${doc['Goals']}";
+                  return entryText
+                      .toLowerCase()
+                      .contains(_searchQuery.toLowerCase());
+                });
 
                 if (filteredData.isEmpty) {
                   return _buildNoEntriesMessage();
@@ -152,7 +160,7 @@ class _JournalPageState extends State<JournalPage> {
 
   Widget _buildNoEntriesMessage() {
     return Center(
-      child: Text('No log entries found.'),
+      child: Text('No journal entries found.'),
     );
   }
 
