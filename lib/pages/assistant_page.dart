@@ -99,27 +99,39 @@ class _AssistantPageState extends State<AssistantPage> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _inputController,
-                    decoration:
-                        InputDecoration(hintText: 'Enter your question...'),
+          Container(
+            margin: EdgeInsets.all(20.0),
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _inputController,
+                      decoration: InputDecoration.collapsed(
+                        hintText: 'Enter your question...',
+                      ),
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    String message = _inputController.text;
-                    if (message.isNotEmpty) {
-                      _sendMessage(message);
-                    }
-                  },
-                  icon: Icon(Icons.send),
-                ),
-              ],
+                  IconButton(
+                    onPressed: () {
+                      String message = _inputController.text;
+                      if (message.isNotEmpty) {
+                        _sendMessage(message);
+                      }
+                    },
+                    icon: Icon(
+                      Icons.send,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

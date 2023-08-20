@@ -65,92 +65,106 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  void _togglePasswordVisibility() {
+    setState(() {
+      _passwordInvisible = !_passwordInvisible;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/water-bg.jpg'),
-              fit: BoxFit.cover,
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/water-bg.jpg'),
+            fit: BoxFit.cover,
           ),
-          padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 130.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/images/swimzen-logo.png',
-                width: 250,
-                height: 250,
-              ),
-              SizedBox(height: 10.0),
-              TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  hintText: 'Email',
-                  filled: true,
-                  fillColor: Colors.white.withOpacity(0.7),
-                  prefixIcon: Icon(
-                    Icons.email_outlined,
-                    color: Colors.blue[800],
-                  ),
-                  // ... Other decoration properties ...
+        ),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/swimzen-logo.png',
+                  width: 250,
+                  height: 250,
                 ),
-              ),
-              SizedBox(height: 20.0),
-              TextField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  hintText: 'Password',
-                  filled: true,
-                  fillColor: Colors.white.withOpacity(0.7),
-                  prefixIcon: Icon(
-                    Icons.lock_outline,
-                    color: Colors.blue[800],
-                  ),
-                  // ... Other decoration properties ...
-                ),
-                obscureText: _passwordInvisible,
-              ),
-              SizedBox(height: 40.0),
-              ElevatedButton(
-                onPressed: _login,
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.blue[800],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
-                ),
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              SizedBox(height: 30.0),
-              RichText(
-                text: TextSpan(
-                  text: 'Don\'t have an account? ',
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: 'Sign Up',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = _goToSignUpPage,
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.7),
+                    prefixIcon: Icon(
+                      Icons.email_outlined,
+                      color: Colors.blue[800],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(height: 20.0),
+                TextField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.7),
+                    prefixIcon: Icon(
+                      Icons.lock_outline,
+                      color: Colors.blue[800],
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: _togglePasswordVisibility,
+                      icon: Icon(
+                        _passwordInvisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.blue[800],
+                      ),
+                    ),
+                  ),
+                  obscureText: _passwordInvisible,
+                ),
+                SizedBox(height: 20.0),
+                ElevatedButton(
+                  onPressed: _login,
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue[800],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
+                  ),
+                  child: Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30.0),
+                RichText(
+                  text: TextSpan(
+                    text: 'Don\'t have an account? ',
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'Sign Up',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = _goToSignUpPage,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

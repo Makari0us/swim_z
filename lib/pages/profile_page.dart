@@ -45,49 +45,46 @@ class _ProfilePageState extends State<ProfilePage> {
         } else {
           final user = snapshot.data;
           return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () => _pickImage(),
-                    child: CircleAvatar(
-                      radius: 70,
-                      backgroundImage: _profileImage != null
-                          ? FileImage(_profileImage!) as ImageProvider<Object>?
-                          : NetworkImage(user!.profilePictureUrl ??
-                              'assets/images/default_profile_image.png'),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 50.0),
+                InkWell(
+                  onTap: () => _pickImage(),
+                  child: CircleAvatar(
+                    radius: 70,
+                    backgroundImage: NetworkImage(
+                      user!.profilePictureUrl ??
+                          'https://firebasestorage.googleapis.com/v0/b/swim-z.appspot.com/o/Profile_Images%2Fdefault_profile_picture.png?alt=media&token=3ee89af4-2672-4369-8634-deb09a257200',
                     ),
                   ),
-                  SizedBox(height: 30.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildInfoColumn('Name', '${user!.name}'),
-                      SizedBox(width: 50.0),
-                      _buildInfoColumn('Age', '${user.age ?? "N/A"}'),
-                      SizedBox(width: 50.0),
-                      _buildInfoColumn(
-                          'Swim Team', '${user.swimTeam ?? "N/A"}'),
-                    ],
-                  ),
-                  SizedBox(height: 20.0),
-                  ElevatedButton(
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditProfilePage(
-                            user: user,
-                          ),
+                ),
+                SizedBox(height: 30.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildInfoColumn('Name', '${user!.name}'),
+                    SizedBox(width: 50.0),
+                    _buildInfoColumn('Age', '${user.age ?? "N/A"}'),
+                    SizedBox(width: 50.0),
+                    _buildInfoColumn('Swim Team', '${user.swimTeam ?? "N/A"}'),
+                  ],
+                ),
+                SizedBox(height: 20.0),
+                ElevatedButton(
+                  onPressed: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditProfilePage(
+                          user: user,
                         ),
-                      );
-                    },
-                    child: Text('Edit Profile'),
-                  ),
-                ],
-              ),
+                      ),
+                    );
+                  },
+                  child: Text('Edit Profile'),
+                ),
+              ],
             ),
           );
         }

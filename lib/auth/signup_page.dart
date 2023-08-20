@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:swim_z/auth/login_page.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -46,10 +47,18 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   _addUserDetails() async {
+    final defaultPictureReference = FirebaseStorage.instance
+        .ref()
+        .child('Profile_Images')
+        .child('default_profile_picture.png');
+
+    final defaultPictureUrl = await defaultPictureReference.getDownloadURL();
+
     await FirebaseFirestore.instance.collection('Users').doc(userUID).set({
       'Name': _nameController.text.trim(),
       'Email': _emailController.text.trim(),
       'UserID': userUID,
+      'Profile Picture': defaultPictureUrl,
     });
   }
 

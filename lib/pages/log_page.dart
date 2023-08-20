@@ -15,11 +15,6 @@ class LogPage extends StatefulWidget {
 class _LogPageState extends State<LogPage> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
-  // final TextEditingController _detailsController = TextEditingController();
-
-  // Details
-  // final TextEditingController _strokeController = TextEditingController();
-  // final TextEditingController _distanceController = TextEditingController();
 
   //Results
   final TextEditingController _resultsController = TextEditingController();
@@ -46,7 +41,6 @@ class _LogPageState extends State<LogPage> {
     'm',
   ];
 
-  // String _selectedStroke = '';
   String? _selectedStroke;
 
   String? _selectedDistance;
@@ -71,14 +65,11 @@ class _LogPageState extends State<LogPage> {
           .doc(_currentUser.uid)
           .collection("Journal Entries");
 
-      // await collectionReference.doc(_dateController.text).set({
       await collectionReference.add({
         'Date': _dateController.text.trim(),
         'Location': _locationController.text.trim(),
-        // 'Details': _detailsController.text.trim(),
         'Strokes': _selectedStroke,
         'Distance': '$_selectedDistance$_selectedUnit',
-
         'Results': _resultsController.text.trim(),
         'Goals': _goalsController.text.trim(),
       });
@@ -86,9 +77,6 @@ class _LogPageState extends State<LogPage> {
       // Clear input fields after saving
       _dateController.clear();
       _locationController.clear();
-      // _detailsController.clear();
-      // _strokeController.clear();
-      // _distanceController.clear();
 
       _resultsController.clear();
       _goalsController.clear();
@@ -161,14 +149,6 @@ class _LogPageState extends State<LogPage> {
               ),
             ),
             SizedBox(height: 20.0),
-            // TextField(
-            //   controller: _detailsController,
-            //   decoration: InputDecoration(
-            //     icon: Icon(Icons.book_rounded),
-            //     hintText: 'Details',
-            //   ),
-            // ),
-            // Put Details Section Here (Strokes, Distance, etc.)
             Container(
               decoration: BoxDecoration(
                 color: Colors.blue,
@@ -185,41 +165,6 @@ class _LogPageState extends State<LogPage> {
                       fontSize: 20.0,
                     ),
                   ),
-                  // TextField(
-                  //   controller: _strokeController,
-                  //   style: TextStyle(color: Colors.white),
-                  //   decoration: InputDecoration(
-                  //     icon: Icon(
-                  //       Icons.numbers_outlined,
-                  //       color: Colors.white,
-                  //     ),
-                  //     hintText: 'Stroke',
-                  //     hintStyle: TextStyle(color: Colors.white),
-                  //     enabledBorder: UnderlineInputBorder(
-                  //       borderSide: BorderSide(
-                  //         color: Colors.white,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-
-                  // DropdownButton<String>(
-                  //   value: _selectedStroke,
-                  //   onChanged: (String? newValue) {
-                  //     setState(() {
-                  //       _selectedStroke = newValue!;
-                  //     });
-                  //   },
-                  //   items: _strokeOptions.map<DropdownMenuItem<String>>(
-                  //     (String value) {
-                  //       return DropdownMenuItem<String>(
-                  //         value: value,
-                  //         child: Text(value),
-                  //       );
-                  //     },
-                  //   ).toList(),
-                  // ),
-
                   DropdownButtonFormField(
                     decoration: InputDecoration(
                       icon: Icon(
@@ -254,41 +199,6 @@ class _LogPageState extends State<LogPage> {
                     },
                   ),
                   SizedBox(height: 10.0),
-
-                  // DropdownButtonFormField(
-                  //   decoration: InputDecoration(
-                  //     icon: Icon(
-                  //       Icons.arrow_circle_right_outlined,
-                  //       color: Colors.white,
-                  //     ),
-                  //     hintText: 'Distance',
-                  //     hintStyle: TextStyle(
-                  //       color: Colors.white,
-                  //     ),
-                  //     enabledBorder: UnderlineInputBorder(
-                  //       borderSide: BorderSide(
-                  //         color: Colors.white,
-                  //       ),
-                  //     ),
-                  //   ),
-                  //   style: TextStyle(
-                  //     color: Colors.white,
-                  //   ),
-                  //   dropdownColor: Colors.blue,
-                  //   value: _selectedDistance,
-                  //   items: _distanceOptions.map((String distance) {
-                  //     return DropdownMenuItem<String>(
-                  //       value: distance,
-                  //       child: Text(distance),
-                  //     );
-                  //   }).toList(),
-                  //   onChanged: (value) {
-                  //     setState(() {
-                  //       _selectedDistance = value;
-                  //     });
-                  //   },
-                  // ),
-
                   Row(
                     children: [
                       Container(
@@ -362,32 +272,11 @@ class _LogPageState extends State<LogPage> {
                       ),
                     ],
                   ),
-
-                  // TextField(
-                  //   controller: _distanceController,
-                  //   style: TextStyle(color: Colors.white),
-                  //   decoration: InputDecoration(
-                  //     icon: Icon(
-                  //       Icons.arrow_circle_right_outlined,
-                  //       color: Colors.white,
-                  //     ),
-                  //     hintText: 'Distance',
-                  //     hintStyle: TextStyle(
-                  //       color: Colors.white,
-                  //     ),
-                  //     enabledBorder: UnderlineInputBorder(
-                  //       borderSide: BorderSide(
-                  //         color: Colors.white,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   SizedBox(height: 10.0),
                 ],
               ),
             ),
             SizedBox(height: 10.0),
-
             Container(
               decoration: BoxDecoration(
                 color: Colors.blue[700],

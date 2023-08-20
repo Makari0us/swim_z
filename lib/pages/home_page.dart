@@ -16,7 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   // Widget buildSection(String title, String imageAsset, String bgImageAsset, Widget page) {
   Widget buildSection(String title, String bgImageAsset, Widget page) {
     return Padding(
