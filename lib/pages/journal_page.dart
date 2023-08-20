@@ -59,7 +59,7 @@ class _JournalPageState extends State<JournalPage> {
                 });
               },
               decoration: InputDecoration(
-                hintText: 'Search by Date',
+                hintText: 'Search',
                 prefixIcon: Icon(Icons.search),
               ),
             ),
@@ -90,7 +90,7 @@ class _JournalPageState extends State<JournalPage> {
 
                 final filteredData = data.docs.where((doc) {
                   final entryText =
-                      "${doc['Date']} ${doc['Location']} ${doc['Strokes']} ${doc['Distance']} ${doc['Results']} ${doc['Goals']}";
+                      "${doc['Journal Title']} ${doc['Date']} ${doc['Location']} ${doc['Strokes']} ${doc['Distance']} ${doc['Results']} ${doc['Goals']}";
                   return entryText
                       .toLowerCase()
                       .contains(_searchQuery.toLowerCase());
@@ -104,6 +104,7 @@ class _JournalPageState extends State<JournalPage> {
                   itemCount: filteredData.length,
                   itemBuilder: (context, index) {
                     final doc = filteredData.elementAt(index);
+                    final title = doc['Journal Title'] as String;
                     final date = doc['Date'] as String;
                     final location = doc['Location'] as String;
                     final strokes = doc['Strokes'] as String;
@@ -117,13 +118,14 @@ class _JournalPageState extends State<JournalPage> {
                       child: Card(
                         elevation: 2,
                         child: ExpansionTile(
-                          title: Text(date),
+                          title: Text(title),
                           children: [
                             Padding(
                               padding: EdgeInsets.all(16.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  _buildDetailText('Date', date),
                                   _buildDetailText('Location', location),
                                   _buildDetailText('Strokes', strokes ?? 'N/A'),
                                   _buildDetailText('Distance', distance),

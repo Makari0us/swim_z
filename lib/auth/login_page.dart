@@ -102,6 +102,24 @@ class _LoginPageState extends State<LoginPage> {
                       Icons.email_outlined,
                       color: Colors.blue[800],
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20.0),
+                      ),
+                      borderSide: BorderSide(
+                        color: Colors.blue[800]!,
+                        width: 2.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20.0),
+                      ),
+                      borderSide: BorderSide(
+                        color: Colors.blue[800]!,
+                        width: 3.0,
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(height: 20.0),
@@ -122,6 +140,24 @@ class _LoginPageState extends State<LoginPage> {
                             ? Icons.visibility
                             : Icons.visibility_off,
                         color: Colors.blue[800],
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20.0),
+                      ),
+                      borderSide: BorderSide(
+                        color: Colors.blue[800]!,
+                        width: 2.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20.0),
+                      ),
+                      borderSide: BorderSide(
+                        color: Colors.blue[800]!,
+                        width: 3.0,
                       ),
                     ),
                   ),

@@ -82,6 +82,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     );
                   },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
                   child: Text('Edit Profile'),
                 ),
               ],
