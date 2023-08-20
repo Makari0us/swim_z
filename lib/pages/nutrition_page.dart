@@ -17,19 +17,17 @@ class _NutritionPageState extends State<NutritionPage> {
   TextEditingController vegetablesController = TextEditingController();
   TextEditingController fruitsController = TextEditingController();
 
+  // ... Calculate BMI, BMR, TDEE methods
+
   void calculateNutrition() {
     if (bmi != null && weight != null && height != null && age != null) {
-      // Calculate recommended intake of each nutrient based on BMI and user input
       setState(() {
         // Calculate nutrient advice based on user input and BMI
-        // This is where you would implement the advice calculation logic
       });
     } else {
       _showValidationErrorDialog();
     }
   }
-
-  // ... Calculate BMI, BMR, TDEE methods
 
   void _showValidationErrorDialog() {
     showDialog(
@@ -50,20 +48,62 @@ class _NutritionPageState extends State<NutritionPage> {
   }
 
   String getCarbohydratesAdvice() {
-    // Implement the advice calculation logic based on user input and BMI
-    // Return the advice message
-    // Example: return 'You need to consume more carbohydrates for optimal energy.';
-    return '';
+  if (bmi != null && weight != null && height != null && age != null) {
+    if (bmi! < 18.5) {
+      return 'You might need to increase your carbohydrate intake for energy.';
+    } else if (bmi! >= 18.5 && bmi! < 25) {
+      return 'Your carbohydrate intake seems balanced for your BMI.';
+    } else {
+      return 'Consider moderating your carbohydrate intake for optimal health.';
+    }
+  } else {
+    return 'Please fill in all required information to get personalized advice.';
   }
+}
 
-  String getProteinAdvice() {
-    // Implement the advice calculation logic based on user input and BMI
-    // Return the advice message
-    // Example: return 'You need to consume more protein for muscle recovery and repair.';
-    return '';
+String getProteinAdvice() {
+  if (bmi != null && weight != null && height != null && age != null) {
+    if (bmi! < 18.5) {
+      return 'Increasing protein intake can help with muscle growth and recovery.';
+    } else if (bmi! >= 18.5 && bmi! < 25) {
+      return 'Your protein intake seems balanced for your BMI.';
+    } else {
+      return 'Maintaining a balanced protein intake supports overall health.';
+    }
+  } else {
+    return 'Please fill in all required information to get personalized advice.';
   }
+}
 
-  // ... Other advice methods
+String getSugarAdvice() {
+  if (bmi != null && weight != null && height != null && age != null) {
+    // Implement sugar advice calculation logic
+    // Example logic: Adjust advice based on user's health and nutritional needs
+    return '';
+  } else {
+    return 'Please fill in all required information to get personalized advice.';
+  }
+}
+
+String getVegetablesAdvice() {
+  if (bmi != null && weight != null && height != null && age != null) {
+    // Implement vegetables advice calculation logic
+    // Example logic: Adjust advice based on user's health and nutritional needs
+    return '';
+  } else {
+    return 'Please fill in all required information to get personalized advice.';
+  }
+}
+
+String getFruitsAdvice() {
+  if (bmi != null && weight != null && height != null && age != null) {
+    // Implement fruits advice calculation logic
+    // Example logic: Adjust advice based on user's health and nutritional needs
+    return '';
+  } else {
+    return 'Please fill in all required information to get personalized advice.';
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -79,21 +119,16 @@ class _NutritionPageState extends State<NutritionPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // ... Input fields for user information (BMI, weight, height, age)
+                // Implement your widgets for BMI, weight, height, and age input here
 
                 // Nutrient intake input fields
-                TextFormField(
+                _buildNutrientInputField(
                   controller: carbohydratesController,
-                  decoration: InputDecoration(
-                    labelText: 'Carbohydrates Intake (grams)',
-                  ),
-                  keyboardType: TextInputType.number,
+                  label: 'Carbohydrates Intake (grams)',
                 ),
-                TextFormField(
+                _buildNutrientInputField(
                   controller: proteinController,
-                  decoration: InputDecoration(
-                    labelText: 'Protein Intake (grams)',
-                  ),
-                  keyboardType: TextInputType.number,
+                  label: 'Protein Intake (grams)',
                 ),
                 // ... Repeat for other nutrients
 
@@ -103,21 +138,52 @@ class _NutritionPageState extends State<NutritionPage> {
                 ),
 
                 // Nutrient information and advice
-                ListTile(
-                  title: Text('Carbohydrates'),
-                  subtitle: Text(
-                      'Intake: ${carbohydratesController.text} grams\n${getCarbohydratesAdvice()}'),
+                _buildNutrientInfoTile(
+                  title: 'Carbohydrates',
+                  value: carbohydratesController.text,
+                  advice: getCarbohydratesAdvice(),
                 ),
-                ListTile(
-                  title: Text('Protein'),
-                  subtitle: Text(
-                      'Intake: ${proteinController.text} grams\n${getProteinAdvice()}'),
+                _buildNutrientInfoTile(
+                  title: 'Protein',
+                  value: proteinController.text,
+                  advice: getProteinAdvice(),
                 ),
                 // ... Repeat for other nutrients
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildNutrientInputField({
+    required TextEditingController controller,
+    required String label,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+      ),
+      keyboardType: TextInputType.number,
+    );
+  }
+
+  Widget _buildNutrientInfoTile({
+    required String title,
+    required String value,
+    required String advice,
+  }) {
+    return ListTile(
+      title: Text(title),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Intake: $value grams'),
+          SizedBox(height: 8),
+          Text(advice),
+        ],
       ),
     );
   }

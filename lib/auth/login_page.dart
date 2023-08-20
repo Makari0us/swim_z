@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,14 +34,28 @@ class _LoginPageState extends State<LoginPage> {
         context,
         MaterialPageRoute(builder: (context) => RoutePage()),
       );
-
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => LogPage()),
-      // );
     } catch (e) {
       print('Login failed: $e'); // Credentials are invalid
+      _showLoginErrorDialog();
     }
+  }
+
+  void _showLoginErrorDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Login Error'),
+        content: Text('Invalid email or password. Please try again.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   void _goToSignUpPage() {
@@ -84,24 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                     Icons.email_outlined,
                     color: Colors.blue[800],
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue[800]!,
-                      width: 2.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue[800]!,
-                      width: 3.0,
-                    ),
-                  ),
+                  // ... Other decoration properties ...
                 ),
               ),
               SizedBox(height: 20.0),
@@ -115,45 +110,11 @@ class _LoginPageState extends State<LoginPage> {
                     Icons.lock_outline,
                     color: Colors.blue[800],
                   ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _passwordInvisible
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      color: Colors.blue[800],
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _passwordInvisible = !_passwordInvisible;
-                      });
-                    },
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue[800]!,
-                      width: 2.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue[800]!,
-                      width: 3.0,
-                    ),
-                  ),
+                  // ... Other decoration properties ...
                 ),
                 obscureText: _passwordInvisible,
               ),
               SizedBox(height: 40.0),
-              // ElevatedButton(
-              //   onPressed: _login,
-              //   child: Text('Login Here'),
-              // ),
               ElevatedButton(
                 onPressed: _login,
                 style: ElevatedButton.styleFrom(

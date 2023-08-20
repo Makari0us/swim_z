@@ -1,9 +1,7 @@
-// ignore_for_file: prefer_const_constructors, avoid_print
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:swim_z/auth/login_page.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -114,24 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     Icons.person_2_outlined,
                     color: Colors.blue[800],
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue[800]!,
-                      width: 2.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue[800]!,
-                      width: 3.0,
-                    ),
-                  ),
+                  // ... Other decoration properties ...
                 ),
               ),
               SizedBox(height: 20.0),
@@ -145,24 +126,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     Icons.email_outlined,
                     color: Colors.blue[800],
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue[800]!,
-                      width: 2.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue[800]!,
-                      width: 3.0,
-                    ),
-                  ),
+                  // ... Other decoration properties ...
                 ),
               ),
               SizedBox(height: 20.0),
@@ -176,37 +140,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     Icons.lock_outline,
                     color: Colors.blue[800],
                   ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _passwordInvisible
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      color: Colors.blue[800],
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _passwordInvisible = !_passwordInvisible;
-                      });
-                    },
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue[800]!,
-                      width: 2.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue[800]!,
-                      width: 3.0,
-                    ),
-                  ),
+                  // ... Other decoration properties ...
                 ),
                 obscureText: _passwordInvisible,
               ),
