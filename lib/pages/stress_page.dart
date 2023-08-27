@@ -84,13 +84,24 @@ class _StressPageState extends State<StressPage> {
         ),
         backgroundColor: Colors.blue,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildSection('Audio', 'environment-bg.jpg', AudioPage()),
-            buildSection('Quotes', 'environment-bg.jpg', QuotesPage()),
-            buildSection('Journal', 'environment-bg.jpg', JournalPage()),
-          ],
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade50, Colors.blue.shade300],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildSection('Audio', 'audio-bg.png', AudioPage()),
+              buildSection('Quotes', 'quotes-bg.jpg', QuotesPage()),
+              buildSection('Journal', 'journal-bg.jpg', JournalPage()),
+            ],
+          ),
         ),
       ),
     );

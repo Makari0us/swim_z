@@ -80,21 +80,33 @@ class _HomePageState extends State<HomePage> {
     String? userName = FirebaseAuth.instance.currentUser!.displayName;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // buildSection('Nutrition', 'anxiety-icon.png', 'nutrition-bg.jpg',
-            //     NutritionPage()),
-            // buildSection('Environment', 'environment-icon.png',
-            //     'environment-bg.jpg', EnvironmentPage()),
-            // buildSection(
-            //     'Stress', 'advice-icon.png', 'stress-bg.jpg', StressPage()),
+      // backgroundColor: Colors.blue[200],
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade50, Colors.blue.shade300],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // buildSection('Nutrition', 'anxiety-icon.png', 'nutrition-bg.jpg',
+              //     NutritionPage()),
+              // buildSection('Environment', 'environment-icon.png',
+              //     'environment-bg.jpg', EnvironmentPage()),
+              // buildSection(
+              //     'Stress', 'advice-icon.png', 'stress-bg.jpg', StressPage()),
 
-            buildSection('Nutrition', 'nutrition2-bg.jpg', NutritionPage()),
-            buildSection(
-                'Environment', 'environment-bg.jpg', EnvironmentPage()),
-            buildSection('Stress', 'stress-bg.jpg', StressPage()),
-          ],
+              buildSection('Nutrition', 'nutrition2-bg.jpg', NutritionPage()),
+              buildSection(
+                  'Environment', 'environment-bg.jpg', EnvironmentPage()),
+              buildSection('Stress', 'stress-bg.jpg', StressPage()),
+            ],
+          ),
         ),
       ),
     );

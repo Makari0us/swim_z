@@ -69,14 +69,23 @@ class _RoutePageState extends State<RoutePage> {
             onPressed: _logOut,
             icon: Icon(
               Icons.logout,
-              color: Colors.white,
             ),
           ),
         ],
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blue[600],
+        // flexibleSpace: Container(
+        //   decoration: BoxDecoration(
+        //     gradient: LinearGradient(
+        //       colors: [Colors.blue.shade50, Colors.blue],
+        //       begin: Alignment.topCenter,
+        //       end: Alignment.bottomCenter,
+        //     ),
+        //   ),
+        // ),
       ),
       body: PageView(
         controller: _pageController,
+        physics: NeverScrollableScrollPhysics(),
         children: _pages,
         onPageChanged: (index) {
           setState(() {
@@ -85,7 +94,7 @@ class _RoutePageState extends State<RoutePage> {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blue[600],
         selectedItemColor: Colors.blue[900],
         unselectedItemColor: Colors.white,
         type: BottomNavigationBarType.fixed,
