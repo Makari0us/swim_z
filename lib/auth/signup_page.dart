@@ -63,6 +63,13 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _registerAccount() async {
+    if (_nameController.text.isEmpty ||
+        _emailController.text.trim().isEmpty ||
+        _passwordController.text.isEmpty) {
+      _showErrorDialog(context, 'Please fill out all fields.');
+      return;
+    }
+
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(

@@ -12,7 +12,7 @@ class StressPage extends StatefulWidget {
 }
 
 class _StressPageState extends State<StressPage> {
-  Widget buildButton(String title, String imageAsset, Widget page) {
+  Widget buildSection(String title, String bgImageAsset, Widget page) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
       child: GestureDetector(
@@ -20,38 +20,49 @@ class _StressPageState extends State<StressPage> {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => page));
         },
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: Container(
-                height: 100,
-                color: Colors.blue,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                offset: Offset(2.0, 2.0),
+                blurRadius: 5.0,
               ),
-            ),
-            Positioned(
-              bottom: 5.0,
-              right: 15.0,
-              child: Text(
-                title,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 40.0,
-                  fontWeight: FontWeight.bold,
+            ],
+          ),
+          child: Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Image.asset(
+                  'assets/images/$bgImageAsset', // Background image
+                  height: 125,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
               ),
-            ),
-            Positioned(
-              top: 10.0,
-              left: 10.0,
-              child: Image.asset(
-                'assets/images/$imageAsset',
-                height: 70.0,
-                width: 70.0,
-                fit: BoxFit.cover,
+              Positioned(
+                bottom: 5.0,
+                left: 15.0,
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold,
+                    shadows: <Shadow>[
+                      Shadow(
+                        offset: Offset(2.0, 2.0),
+                        blurRadius: 3.0,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -76,9 +87,9 @@ class _StressPageState extends State<StressPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            buildButton('Audio', 'advice-icon.png', AudioPage()),
-            buildButton('Quotes', 'advice-icon.png', QuotesPage()),
-            buildButton('Journal', 'advice-icon.png', JournalPage()),
+            buildSection('Audio', 'environment-bg.jpg', AudioPage()),
+            buildSection('Quotes', 'environment-bg.jpg', QuotesPage()),
+            buildSection('Journal', 'environment-bg.jpg', JournalPage()),
           ],
         ),
       ),

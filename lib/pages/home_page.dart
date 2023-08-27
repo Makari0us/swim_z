@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                 borderRadius: BorderRadius.circular(10.0),
                 child: Image.asset(
                   'assets/images/$bgImageAsset', // Background image
-                  height: 100,
+                  height: 125,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
@@ -68,16 +68,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              // Positioned(
-              //   top: 10.0,
-              //   left: 10.0,
-              //   child: Image.asset(
-              //     'assets/images/$imageAsset',
-              //     height: 70.0,
-              //     width: 70.0,
-              //     fit: BoxFit.cover,
-              //   ),
-              // ),
             ],
           ),
         ),

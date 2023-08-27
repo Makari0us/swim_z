@@ -14,7 +14,7 @@ class _AssistantPageState extends State<AssistantPage> {
   List<String> _chatHistory = [];
 
   Future<String> _getChatResponse(String input) async {
-    final apiKey = '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';
+    final apiKey = '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';
     final model = 'gpt-3.5-turbo';
     final apiEndpoint = 'https://api.openai.com/v1/chat/completions';
 
