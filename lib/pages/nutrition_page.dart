@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+enum Gender { Male, Female }
+
 class NutritionPage extends StatefulWidget {
   @override
   _NutritionPageState createState() => _NutritionPageState();
@@ -10,6 +12,7 @@ class _NutritionPageState extends State<NutritionPage> {
   double? weight;
   double? height;
   int? age;
+  Gender? gender;
 
   TextEditingController carbohydratesController = TextEditingController();
   TextEditingController proteinController = TextEditingController();
@@ -20,55 +23,47 @@ class _NutritionPageState extends State<NutritionPage> {
   // ... Calculate BMI, BMR, TDEE methods
 
   void calculateNutrition() {
-    if (bmi != null && weight != null && height != null && age != null) {
+    if (bmi != null && weight != null && height != null && age != null && gender != null) {
       setState(() {
         // Calculate nutrient advice based on user input and BMI
+        String sugarAdvice = getSugarAdvice();
+        String vegetablesAdvice = getVegetablesAdvice();
+        String fruitsAdvice = getFruitsAdvice();
+        // ... Repeat for other nutrients
       });
     } else {
       _showValidationErrorDialog();
     }
   }
 
-  void _showValidationErrorDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Error'),
-        content: Text('Please enter all the required information.'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
   String getCarbohydratesAdvice() {
-  if (bmi != null && weight != null && height != null && age != null) {
-    if (bmi! < 18.5) {
-      return 'You might need to increase your carbohydrate intake for energy.';
-    } else if (bmi! >= 18.5 && bmi! < 25) {
-      return 'Your carbohydrate intake seems balanced for your BMI.';
+    if (bmi != null && weight != null && height != null && age != null && gender != null) {
+      double carbsNeeded = 0.0; // Calculate based on user info, BMI, and activity level
+      double carbsIntake = double.parse(carbohydratesController.text);
+      
+      if (carbsIntake < carbsNeeded * 0.8) {
+        return 'Consider increasing your carbohydrate intake for energy.';
+      } else if (carbsIntake > carbsNeeded * 1.2) {
+        return 'Your carbohydrate intake seems high. Adjust based on your activity level.';
+      } else {
+        return 'Your carbohydrate intake is balanced for your needs.';
+      }
     } else {
-      return 'Consider moderating your carbohydrate intake for optimal health.';
+      return 'Please fill in all required information to get personalized advice.';
     }
-  } else {
-    return 'Please fill in all required information to get personalized advice.';
   }
-}
 
-String getProteinAdvice() {
+  String getProteinAdvice() {
   if (bmi != null && weight != null && height != null && age != null) {
-    if (bmi! < 18.5) {
-      return 'Increasing protein intake can help with muscle growth and recovery.';
-    } else if (bmi! >= 18.5 && bmi! < 25) {
-      return 'Your protein intake seems balanced for your BMI.';
+    double proteinNeeded = 0.0; // Calculate based on user info, BMI, and activity level
+    double proteinIntake = double.parse(proteinController.text);
+
+    if (proteinIntake < proteinNeeded * 0.8) {
+      return 'Consider increasing your protein intake to support your body\'s needs.';
+    } else if (proteinIntake > proteinNeeded * 1.2) {
+      return 'Your protein intake seems high. Adjust based on your activity level.';
     } else {
-      return 'Maintaining a balanced protein intake supports overall health.';
+      return 'Your protein intake is balanced for your needs.';
     }
   } else {
     return 'Please fill in all required information to get personalized advice.';
@@ -76,40 +71,53 @@ String getProteinAdvice() {
 }
 
 String getSugarAdvice() {
-  if (bmi != null && weight != null && height != null && age != null) {
-    // Implement sugar advice calculation logic
-    // Example logic: Adjust advice based on user's health and nutritional needs
-    return '';
+  if (bmi != null && weight != null && height != null && age != null && gender != null) {
+    double sugarIntake = double.parse(sugarController.text);
+
+    if (sugarIntake > 50) {
+      return 'Limit your sugar intake for better health.';
+    } else {
+      return 'Your sugar intake is within recommended limits.';
+    }
   } else {
     return 'Please fill in all required information to get personalized advice.';
   }
 }
 
 String getVegetablesAdvice() {
-  if (bmi != null && weight != null && height != null && age != null) {
-    // Implement vegetables advice calculation logic
-    // Example logic: Adjust advice based on user's health and nutritional needs
-    return '';
+  if (bmi != null && weight != null && height != null && age != null && gender != null) {
+    double vegetablesIntake = double.parse(vegetablesController.text);
+
+    if (vegetablesIntake < 200) {
+      return 'Increase your vegetable intake for a more balanced diet.';
+    } else {
+      return 'Your vegetable intake is good for your health.';
+    }
   } else {
     return 'Please fill in all required information to get personalized advice.';
   }
 }
 
 String getFruitsAdvice() {
-  if (bmi != null && weight != null && height != null && age != null) {
-    // Implement fruits advice calculation logic
-    // Example logic: Adjust advice based on user's health and nutritional needs
-    return '';
+  if (bmi != null && weight != null && height != null && age != null && gender != null) {
+    double fruitsIntake = double.parse(fruitsController.text);
+
+    if (fruitsIntake < 150) {
+      return 'Include more fruits in your diet for essential vitamins.';
+    } else {
+      return 'Your fruit intake is contributing to a healthy diet.';
+    }
   } else {
     return 'Please fill in all required information to get personalized advice.';
   }
 }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Swimmer Nutrition Page'),
+        title: Text('Nutrition Advisor'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -118,8 +126,23 @@ String getFruitsAdvice() {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ... Input fields for user information (BMI, weight, height, age)
-                // Implement your widgets for BMI, weight, height, and age input here
+                // ... Input fields for user information (BMI, weight, height, age, gender)
+                DropdownButtonFormField<Gender>(
+                  value: gender,
+                  items: Gender.values.map((Gender value) {
+                    return DropdownMenuItem<Gender>(
+                      value: value,
+                      child: Text(value.toString().split('.').last),
+                    );
+                  }).toList(),
+                  onChanged: (Gender? newValue) {
+                    setState(() {
+                      gender = newValue;
+                    });
+                  },
+                  decoration: InputDecoration(labelText: 'Gender'),
+                ),
+                // ... Repeat for other user inputs
 
                 // Nutrient intake input fields
                 _buildNutrientInputField(
@@ -149,6 +172,23 @@ String getFruitsAdvice() {
                   advice: getProteinAdvice(),
                 ),
                 // ... Repeat for other nutrients
+
+                // Add ListTile widgets for sugar, vegetables, and fruits
+                _buildNutrientInfoTile(
+                  title: 'Sugar',
+                  value: sugarController.text,
+                  advice: getSugarAdvice(),
+                ),
+                _buildNutrientInfoTile(
+                  title: 'Vegetables',
+                  value: vegetablesController.text,
+                  advice: getVegetablesAdvice(),
+                ),
+                _buildNutrientInfoTile(
+                  title: 'Fruits',
+                  value: fruitsController.text,
+                  advice: getFruitsAdvice(),
+                ),
               ],
             ),
           ),
@@ -183,6 +223,24 @@ String getFruitsAdvice() {
           Text('Intake: $value grams'),
           SizedBox(height: 8),
           Text(advice),
+        ],
+      ),
+    );
+  }
+
+  void _showValidationErrorDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Error'),
+        content: Text('Please enter all the required information.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('OK'),
+          ),
         ],
       ),
     );
