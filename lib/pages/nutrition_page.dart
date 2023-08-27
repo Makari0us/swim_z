@@ -20,97 +20,185 @@ class _NutritionPageState extends State<NutritionPage> {
   TextEditingController vegetablesController = TextEditingController();
   TextEditingController fruitsController = TextEditingController();
 
-  // ... Calculate BMI, BMR, TDEE methods
 
   void calculateNutrition() {
-    if (bmi != null && weight != null && height != null && age != null && gender != null) {
-      setState(() {
-        // Calculate nutrient advice based on user input and BMI
-        String sugarAdvice = getSugarAdvice();
-        String vegetablesAdvice = getVegetablesAdvice();
-        String fruitsAdvice = getFruitsAdvice();
-        // ... Repeat for other nutrients
-      });
-    } else {
-      _showValidationErrorDialog();
-    }
+  if (bmi != null &&
+      weight != null &&
+      height != null &&
+      age != null &&
+      gender != null) {
+    setState(() {
+      String carbohydratesAdvice = getCarbohydratesAdvice();
+      String proteinAdvice = getProteinAdvice();
+      String fatAdvice = getFatAdvice();
+      
+      _showNutrientAdviceDialog('Carbohydrates Advice', carbohydratesAdvice);
+      _showNutrientAdviceDialog('Protein Advice', proteinAdvice);
+      _showNutrientAdviceDialog('Fat Advice', fatAdvice);
+    });
+  } else {
+    _showValidationErrorDialog();
   }
+}
+
+void _showNutrientAdviceDialog(String nutrient, String advice) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text('$nutrient'),
+      content: Text('$advice'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('OK'),
+        ),
+      ],
+    ),
+  );
+}
+
+
+  void calculateBMI() {
+  if (weight != null && height != null) {
+    double heightInMeters = height! / 100; // Convert height to meters
+    double bmiValue = weight! / (heightInMeters * heightInMeters);
+    setState(() {
+      bmi = bmiValue;
+    });
+  }
+}
+
+String getBMIAdvice() {
+  if (bmi != null) {
+    if (bmi! < 18.5) {
+      return 'You are underweight. Consider increasing your nutrient intake.';
+    } else if (bmi! < 24.9) {
+      return 'Your weight is within the normal range. Maintain a balanced diet.';
+    } else if (bmi! < 29.9) {
+      return 'You are overweight. Focus on portion control and regular exercise.';
+    } else {
+      return 'You are in the obese range. Consult a healthcare professional for advice.';
+    }
+  } else {
+    return 'Please enter weight and height to calculate BMI.';
+  }
+}
+
+  double calculateBMR() {
+  if (weight != null && height != null && age != null && gender != null) {
+    if (gender == Gender.Male) {
+      return 88.362 + (13.397 * weight!) + (4.799 * height!) - (5.677 * age!);
+    } else {
+      return 447.593 + (9.247 * weight!) + (3.098 * height!) - (4.330 * age!);
+    }
+  } else {
+    return 0.0; // Default BMR value if inputs are missing
+  }
+}
 
   String getCarbohydratesAdvice() {
-    if (bmi != null && weight != null && height != null && age != null && gender != null) {
-      double carbsNeeded = 0.0; // Calculate based on user info, BMI, and activity level
-      double carbsIntake = double.parse(carbohydratesController.text);
-      
-      if (carbsIntake < carbsNeeded * 0.8) {
-        return 'Consider increasing your carbohydrate intake for energy.';
-      } else if (carbsIntake > carbsNeeded * 1.2) {
-        return 'Your carbohydrate intake seems high. Adjust based on your activity level.';
-      } else {
-        return 'Your carbohydrate intake is balanced for your needs.';
-      }
+  if (bmi != null && weight != null && height != null && age != null && gender != null) {
+    double bmr; // Basal Metabolic Rate - calories needed at rest
+    if (gender == Gender.Male) {
+      bmr = 88.362 + (13.397 * weight!) + (4.799 * height!) - (5.677 * age!);
     } else {
-      return 'Please fill in all required information to get personalized advice.';
+      bmr = 447.593 + (9.247 * weight!) + (3.098 * height!) - (4.330 * age!);
     }
-  }
+    
+    
+    double tdee = bmr;
+    double carbsNeeded = (tdee * 0.6) / 4.0;
 
-  String getProteinAdvice() {
+    double carbsIntake = double.tryParse(carbohydratesController.text) ?? 0.0;
+
+    if (carbsIntake < carbsNeeded * 0.8) {
+      return 'Consider increasing your carbohydrate intake for energy.';
+    } else if (carbsIntake > carbsNeeded * 1.2) {
+      return 'Your carbohydrate intake seems high. Adjust based on your activity level.';
+    } else {
+      if (bmi! < 18.5) {
+        return 'Your carbohydrate intake is appropriate for energy, but ensure you are getting enough nutrients to support your weight.';
+      } else if (bmi! < 24.9) {
+        return 'Your carbohydrate intake is balanced for your weight and energy needs.';
+      } else if (bmi! < 29.9) {
+        return 'Your carbohydrate intake is balanced. Focus on portion control and a balanced diet to maintain a healthy weight.';
+      } else {
+        return 'Your carbohydrate intake is balanced, but consider consulting a healthcare professional for weight management advice.';
+      }
+    }
+  } else {
+    return 'Please fill in all required information to get personalized advice.';
+  }
+}
+
+
+String getProteinAdvice() {
   if (bmi != null && weight != null && height != null && age != null) {
-    double proteinNeeded = 0.0; // Calculate based on user info, BMI, and activity level
-    double proteinIntake = double.parse(proteinController.text);
+    double bmr; // Basal Metabolic Rate - calories needed at rest
+    if (gender == Gender.Male) {
+      bmr = 88.362 + (13.397 * weight!) + (4.799 * height!) - (5.677 * age!);
+    } else {
+      bmr = 447.593 + (9.247 * weight!) + (3.098 * height!) - (4.330 * age!);
+    }
+
+    double tdee = bmr;
+    double proteinNeeded = (tdee * 0.15) / 4.0; // Assuming 15% of calories from protein
+
+    double proteinIntake = double.tryParse(proteinController.text) ?? 0.0;
 
     if (proteinIntake < proteinNeeded * 0.8) {
       return 'Consider increasing your protein intake to support your body\'s needs.';
     } else if (proteinIntake > proteinNeeded * 1.2) {
       return 'Your protein intake seems high. Adjust based on your activity level.';
     } else {
-      return 'Your protein intake is balanced for your needs.';
+      if (bmi! < 18.5) {
+        return 'Your protein intake is balanced, but ensure you are meeting your nutrient needs for your weight.';
+      } else if (bmi! < 24.9) {
+        return 'Your protein intake is appropriate for your weight and activity level.';
+      } else if (bmi! < 29.9) {
+        return 'Your protein intake is balanced. Focus on maintaining your weight with a balanced diet.';
+      } else {
+        return 'Your protein intake is balanced, but consider consulting a healthcare professional for weight management advice.';
+      }
     }
   } else {
     return 'Please fill in all required information to get personalized advice.';
   }
 }
 
-String getSugarAdvice() {
-  if (bmi != null && weight != null && height != null && age != null && gender != null) {
-    double sugarIntake = double.parse(sugarController.text);
 
-    if (sugarIntake > 50) {
-      return 'Limit your sugar intake for better health.';
+String getFatAdvice() {
+  if (bmi != null && weight != null && height != null && age != null) {
+    double bmr = calculateBMR(); // Basal Metabolic Rate
+    // Calculate BMR based on gender, weight, height, and age
+  
+    double fatNeeded = (bmr * 0.25) / 9.0; // Assuming 25% of calories from fat
+
+    TextEditingController fatController = TextEditingController();
+    double fatIntake = double.tryParse(fatController.text) ?? 0.0;
+
+    if (fatIntake < fatNeeded * 0.8) {
+      return 'Consider increasing your healthy fat intake for overall health.';
+    } else if (fatIntake > fatNeeded * 1.2) {
+      return 'Your fat intake seems high. Focus on moderation for a balanced diet.';
     } else {
-      return 'Your sugar intake is within recommended limits.';
+      if (bmi! < 18.5) {
+        return 'Your fat intake is balanced, but ensure you are meeting nutrient needs for your weight.';
+      } else if (bmi! < 24.9) {
+        return 'Your fat intake is appropriate for your weight and activity level.';
+      } else if (bmi! < 29.9) {
+        return 'Your fat intake is balanced. Focus on maintaining your weight with a balanced diet.';
+      } else {
+        return 'Your fat intake is balanced, but consider consulting a healthcare professional for weight management advice.';
+      }
     }
   } else {
     return 'Please fill in all required information to get personalized advice.';
   }
 }
 
-String getVegetablesAdvice() {
-  if (bmi != null && weight != null && height != null && age != null && gender != null) {
-    double vegetablesIntake = double.parse(vegetablesController.text);
-
-    if (vegetablesIntake < 200) {
-      return 'Increase your vegetable intake for a more balanced diet.';
-    } else {
-      return 'Your vegetable intake is good for your health.';
-    }
-  } else {
-    return 'Please fill in all required information to get personalized advice.';
-  }
-}
-
-String getFruitsAdvice() {
-  if (bmi != null && weight != null && height != null && age != null && gender != null) {
-    double fruitsIntake = double.parse(fruitsController.text);
-
-    if (fruitsIntake < 150) {
-      return 'Include more fruits in your diet for essential vitamins.';
-    } else {
-      return 'Your fruit intake is contributing to a healthy diet.';
-    }
-  } else {
-    return 'Please fill in all required information to get personalized advice.';
-  }
-}
 
 
   @override
@@ -177,17 +265,7 @@ String getFruitsAdvice() {
                 _buildNutrientInfoTile(
                   title: 'Sugar',
                   value: sugarController.text,
-                  advice: getSugarAdvice(),
-                ),
-                _buildNutrientInfoTile(
-                  title: 'Vegetables',
-                  value: vegetablesController.text,
-                  advice: getVegetablesAdvice(),
-                ),
-                _buildNutrientInfoTile(
-                  title: 'Fruits',
-                  value: fruitsController.text,
-                  advice: getFruitsAdvice(),
+                  advice: getFatAdvice(),
                 ),
               ],
             ),
