@@ -16,9 +16,7 @@ class _NutritionPageState extends State<NutritionPage> {
 
   TextEditingController carbohydratesController = TextEditingController();
   TextEditingController proteinController = TextEditingController();
-  TextEditingController sugarController = TextEditingController();
-  TextEditingController vegetablesController = TextEditingController();
-  TextEditingController fruitsController = TextEditingController();
+ TextEditingController fatController = TextEditingController();
 
   void calculateNutrition() {
     if (bmi != null &&
@@ -170,35 +168,34 @@ class _NutritionPageState extends State<NutritionPage> {
   }
 
   String getFatAdvice() {
-    if (bmi != null && weight != null && height != null && age != null) {
-      double bmr = calculateBMR(); // Basal Metabolic Rate
-      // Calculate BMR based on gender, weight, height, and age
+  if (bmi != null && weight != null && height != null && age != null) {
+    double bmr = calculateBMR(); // Basal Metabolic Rate
+    // Calculate BMR based on gender, weight, height, and age
 
-      double fatNeeded =
-          (bmr * 0.25) / 9.0; // Assuming 25% of calories from fat
+    double fatNeeded = (bmr * 0.25) / 9.0; // Assuming 25% of calories from fat
 
-      TextEditingController fatController = TextEditingController();
-      double fatIntake = double.tryParse(fatController.text) ?? 0.0;
+    double fatIntake = double.tryParse(fatController.text) ?? 0.0;
 
-      if (fatIntake < fatNeeded * 0.8) {
-        return 'Consider increasing your healthy fat intake for overall health.';
-      } else if (fatIntake > fatNeeded * 1.2) {
-        return 'Your fat intake seems high. Focus on moderation for a balanced diet.';
-      } else {
-        if (bmi! < 18.5) {
-          return 'Your fat intake is balanced, but ensure you are meeting nutrient needs for your weight.';
-        } else if (bmi! < 24.9) {
-          return 'Your fat intake is appropriate for your weight and activity level.';
-        } else if (bmi! < 29.9) {
-          return 'Your fat intake is balanced. Focus on maintaining your weight with a balanced diet.';
-        } else {
-          return 'Your fat intake is balanced, but consider consulting a healthcare professional for weight management advice.';
-        }
-      }
+    if (fatIntake < fatNeeded * 0.8) {
+      return 'Consider increasing your healthy fat intake for overall health.';
+    } else if (fatIntake > fatNeeded * 1.2) {
+      return 'Your fat intake seems high. Focus on moderation for a balanced diet.';
     } else {
-      return 'Please fill in all required information to get personalized advice.';
+      if (bmi! < 18.5) {
+        return 'Your fat intake is balanced, but ensure you are meeting nutrient needs for your weight.';
+      } else if (bmi! < 24.9) {
+        return 'Your fat intake is appropriate for your weight and activity level.';
+      } else if (bmi! < 29.9) {
+        return 'Your fat intake is balanced. Focus on maintaining your weight with a balanced diet.';
+      } else {
+        return 'Your fat intake is balanced, but consider consulting a healthcare professional for weight management advice.';
+      }
     }
+  } else {
+    return 'Please fill in all required information to get personalized advice.';
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -258,14 +255,7 @@ class _NutritionPageState extends State<NutritionPage> {
                   value: proteinController.text,
                   advice: getProteinAdvice(),
                 ),
-                // ... Repeat for other nutrients
-
-                // Add ListTile widgets for sugar, vegetables, and fruits
-                _buildNutrientInfoTile(
-                  title: 'Sugar',
-                  value: sugarController.text,
-                  advice: getFatAdvice(),
-                ),
+              
               ],
             ),
           ),
