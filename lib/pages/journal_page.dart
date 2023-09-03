@@ -47,7 +47,7 @@ class _JournalPageState extends State<JournalPage> {
             fontSize: 24, // Adjust the font size
           ),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blue[600],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -129,7 +129,8 @@ class _JournalPageState extends State<JournalPage> {
                         padding: EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 16.0),
                         child: Card(
-                          elevation: 4, // Increase elevation
+                          elevation: 4,
+                          color: Colors.white,
                           child: ExpansionTile(
                             title: Text(
                               title,
@@ -147,7 +148,8 @@ class _JournalPageState extends State<JournalPage> {
                                   children: [
                                     _buildDetailText('Date', date),
                                     _buildDetailText('Location', location),
-                                    _buildDetailText('Strokes', strokes ?? 'N/A'),
+                                    _buildDetailText(
+                                        'Strokes', strokes ?? 'N/A'),
                                     _buildDetailText('Distance', distance),
                                     _buildDetailText('Results', results),
                                     _buildDetailText('Goals', goals),
@@ -195,7 +197,7 @@ class _JournalPageState extends State<JournalPage> {
       child: Text(
         'No journal entries found.',
         style: TextStyle(
-          color: Colors.grey, // Change text color
+          color: Colors.grey[800], // Change text color
           fontSize: 16, // Adjust font size
         ),
       ),

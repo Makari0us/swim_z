@@ -82,7 +82,7 @@ class _StressPageState extends State<StressPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blue[600],
       ),
       body: Container(
         width: double.infinity,

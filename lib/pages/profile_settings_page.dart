@@ -19,133 +19,184 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String? _name;
   int? _age;
   String? _swimTeam;
+  String? _bio;
   File? _profileImage;
   bool _isUploadingImage = false;
+  bool _isProfileImageChanged = false;
   final picker = ImagePicker();
+  bool _hasUnsavedChanges = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
-        title: Text(
-          'Edit Profile',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: Colors.blue,
-        actions: [
-          IconButton(
-            onPressed: () async {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // Saves Data to Firestore
-                try {
-                  await FirebaseFirestore.instance
-                      .collection('Users')
-                      .doc(widget.user.id)
-                      .update({
-                    'Name': _name,
-                    'Age': _age,
-                    'Swim Team': _swimTeam,
-                  });
-
-                  // Update user's profile with new data
-                  UserProfile updatedUser = UserProfile(
-                    id: widget.user.id,
-                    name: _name ?? widget.user.name,
-                    age: _age ?? widget.user.age,
-                    swimTeam: _swimTeam ?? widget.user.swimTeam,
-                  );
-
-                  Navigator.pop(context, updatedUser);
-                } catch (e) {
-                  print('Error updating user data: $e');
-                }
-              }
-            },
-            icon: Icon(Icons.check),
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              SizedBox(height: 20.0),
-              InkWell(
-                onTap: () => _pickImage(),
-                child: CircleAvatar(
-                  radius: 64,
-                  backgroundImage: NetworkImage(widget.user.profilePictureUrl ??
-                      'https://firebasestorage.googleapis.com/v0/b/swim-z.appspot.com/o/Profile_Images%2Fdefault_profile_picture.png?alt=media&token=3ee89af4-2672-4369-8634-deb09a257200'),
+    return WillPopScope(
+      onWillPop: () async {
+        if (_hasUnsavedChanges) {
+          return await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text("Unsaved Changes"),
+              content:
+                  Text("You have unsaved changes. Do you wish to proceed?"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false); // Stay on the page
+                  },
+                  child: Text("No"),
                 ),
-              ),
-              SizedBox(height: 12.0),
-              SizedBox(height: 20.0),
-              TextFormField(
-                initialValue: widget.user.name,
-                decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true); // Pop the page
+                  },
+                  child: Text("Yes"),
+                ),
+              ],
+            ),
+          );
+        }
+        return true; // Allow popping the page if no unsaved changes
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+          title: Text(
+            'Edit Profile',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          backgroundColor: Colors.blue[600],
+          actions: [
+            IconButton(
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+
+                  if (_isProfileImageChanged) {
+                    await _uploadProfileImage();
                   }
-                  return null;
-                },
-                onSaved: (value) {
-                  _name = value;
-                },
-              ),
-              SizedBox(height: 12.0),
-              TextFormField(
-                initialValue: widget.user.age?.toString(),
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'Age'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your age';
+
+                  try {
+                    await FirebaseFirestore.instance
+                        .collection('Users')
+                        .doc(widget.user.id)
+                        .update({
+                      'Name': _name,
+                      'Age': _age,
+                      'Swim Team': _swimTeam,
+                      'Bio': _bio,
+                      if (_isProfileImageChanged)
+                        'Profile Picture': _profileImage,
+                    });
+
+                    UserProfile updatedUser = UserProfile(
+                      id: widget.user.id,
+                      name: _name ?? widget.user.name,
+                      age: _age ?? widget.user.age,
+                      swimTeam: _swimTeam ?? widget.user.swimTeam,
+                      bio: _bio ?? '',
+                      profilePictureUrl: _isProfileImageChanged
+                          ? _profileImage.toString()
+                          : widget.user.profilePictureUrl,
+                    );
+
+                    Navigator.pop(context, updatedUser);
+                  } catch (e) {
+                    print('Error updating user data: $e');
                   }
-                  return null;
-                },
-                onSaved: (value) {
-                  _age = int.tryParse(value!);
-                },
+                }
+              },
+              icon: Icon(Icons.check),
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  SizedBox(height: 50.0),
+                  InkWell(
+                    onTap: () => _pickImage(),
+                    child: CircleAvatar(
+                      radius: 70,
+                      backgroundImage: _profileImage != null
+                          ? FileImage(_profileImage!) as ImageProvider
+                          : NetworkImage(widget.user.profilePictureUrl ??
+                              'https://firebasestorage.googleapis.com/v0/b/swim-z.appspot.com/o/Profile_Images%2Fdefault_profile_picture.png?alt=media&token=3ee89af4-2672-4369-8634-deb09a257200'),
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    initialValue: widget.user.name,
+                    decoration: InputDecoration(labelText: 'Name'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your name';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _name = value;
+                    },
+                  ),
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    initialValue: widget.user.age?.toString(),
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'Age'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your age';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _age = int.tryParse(value!);
+                    },
+                  ),
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    initialValue: widget.user.swimTeam,
+                    decoration: InputDecoration(labelText: 'Swim Team'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your swim team';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _swimTeam = value;
+                    },
+                  ),
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    initialValue: widget.user.bio,
+                    maxLines: 3,
+                    decoration: InputDecoration(labelText: 'Bio'),
+                    onSaved: (value) {
+                      _bio = value;
+                    },
+                  ),
+                ],
               ),
-              SizedBox(height: 12.0),
-              TextFormField(
-                initialValue: widget.user.swimTeam,
-                decoration: InputDecoration(labelText: 'Swim Team'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your swim team';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _swimTeam = value;
-                },
-              ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Future<void> _pickImage() async {
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
+  Future<void> _uploadProfileImage() async {
+    if (_profileImage != null) {
       setState(() {
         _isUploadingImage = true;
       });
-
-      final imageFile = File(pickedImage.path);
 
       final storageRef = firebase_storage.FirebaseStorage.instance
           .ref()
@@ -153,7 +204,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           .child(widget.user.id);
 
       try {
-        await storageRef.putFile(imageFile);
+        await storageRef.putFile(_profileImage!);
         final downloadURL = await storageRef.getDownloadURL();
 
         final userRef =
@@ -164,8 +215,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
         });
 
         setState(() {
-          _profileImage = imageFile;
           _isUploadingImage = false;
+          _isProfileImageChanged = false; // Reset profile image change flag
         });
       } catch (e) {
         print('Error uploading image: $e');
@@ -173,6 +224,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
           _isUploadingImage = false;
         });
       }
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _isProfileImageChanged = true; // Set the flag when image is changed
+        _profileImage = File(pickedImage.path);
+        _hasUnsavedChanges = true; // Set the flag for unsaved changes
+      });
     }
   }
 }
