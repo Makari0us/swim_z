@@ -35,7 +35,7 @@ class _JournalPageState extends State<JournalPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 2, // Add elevation
+        elevation: 2,
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
@@ -54,13 +54,14 @@ class _JournalPageState extends State<JournalPage> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.blue, Colors.white],
+            colors: [Colors.blue.shade300, Colors.blue.shade50],
           ),
         ),
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.all(10.0),
+              padding: EdgeInsets.only(
+                  top: 20.0, left: 20.0, right: 20.0, bottom: 8.0),
               child: TextField(
                 controller: _searchController,
                 onChanged: (value) {
@@ -137,7 +138,7 @@ class _JournalPageState extends State<JournalPage> {
                               style: TextStyle(
                                 fontSize: 18, // Adjust font size
                                 fontWeight: FontWeight.bold,
-                                color: Colors.blue, // Change text color
+                                color: Colors.blue[600], // Change text color
                               ),
                             ),
                             children: [

@@ -30,6 +30,7 @@ class _QuotesPageState extends State<QuotesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 2,
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
@@ -40,7 +41,7 @@ class _QuotesPageState extends State<QuotesPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blue[600],
       ),
       body: Center(
         child: Padding(

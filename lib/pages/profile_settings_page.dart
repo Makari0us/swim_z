@@ -58,6 +58,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          elevation: 2,
           iconTheme: IconThemeData(
             color: Colors.white,
           ),

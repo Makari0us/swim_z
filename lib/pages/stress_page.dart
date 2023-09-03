@@ -72,6 +72,7 @@ class _StressPageState extends State<StressPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 2,
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
@@ -89,7 +90,7 @@ class _StressPageState extends State<StressPage> {
         height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade50, Colors.blue.shade300],
+            colors: [Colors.blue.shade300, Colors.blue.shade50],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),

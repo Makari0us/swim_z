@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
         height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade50, Colors.blue.shade300],
+            colors: [Colors.blue.shade300, Colors.blue.shade50],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -102,8 +102,8 @@ class _HomePageState extends State<HomePage> {
               //     'Stress', 'advice-icon.png', 'stress-bg.jpg', StressPage()),
 
               buildSection('Nutrition', 'nutrition2-bg.jpg', NutritionPage()),
-              buildSection(
-                  'Environment', 'environment-bg.jpg', EnvironmentPage()),
+              // buildSection(
+              //     'Environment', 'environment-bg.jpg', EnvironmentPage()),
               buildSection('Stress', 'stress-bg.jpg', StressPage()),
             ],
           ),

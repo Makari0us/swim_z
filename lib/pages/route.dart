@@ -76,6 +76,7 @@ class _RoutePageState extends State<RoutePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 2,
         iconTheme: IconThemeData(
           color: Colors.white,
         ),

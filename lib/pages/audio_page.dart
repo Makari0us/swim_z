@@ -76,6 +76,7 @@ class _AudioPageState extends State<AudioPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 2,
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
@@ -88,8 +89,15 @@ class _AudioPageState extends State<AudioPage> {
         ),
         backgroundColor: Colors.blue[600],
       ),
-      body: Padding(
+      body: Container(
         padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.blue.shade300, Colors.blue.shade50],
+          ),
+        ),
         child: audioFiles.isEmpty
             ? Center(
                 child: CircularProgressIndicator(),
