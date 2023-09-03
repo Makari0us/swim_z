@@ -14,9 +14,17 @@ class _NutritionPageState extends State<NutritionPage> {
   int? age;
   Gender? gender;
 
+  TextEditingController bmiController = TextEditingController();
+  TextEditingController weightController = TextEditingController();
+  TextEditingController heightController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
   TextEditingController carbohydratesController = TextEditingController();
   TextEditingController proteinController = TextEditingController();
- TextEditingController fatController = TextEditingController();
+  TextEditingController fatController = TextEditingController();
+
+  String carbohydratesAdvice = '';
+  String proteinAdvice = '';
+  String fatAdvice = '';
 
   void calculateNutrition() {
     if (bmi != null &&
@@ -25,9 +33,9 @@ class _NutritionPageState extends State<NutritionPage> {
         age != null &&
         gender != null) {
       setState(() {
-        String carbohydratesAdvice = getCarbohydratesAdvice();
-        String proteinAdvice = getProteinAdvice();
-        String fatAdvice = getFatAdvice();
+        carbohydratesAdvice = getCarbohydratesAdvice();
+        proteinAdvice = getProteinAdvice();
+        fatAdvice = getFatAdvice();
 
         _showNutrientAdviceDialog('Carbohydrates Advice', carbohydratesAdvice);
         _showNutrientAdviceDialog('Protein Advice', proteinAdvice);
@@ -58,7 +66,7 @@ class _NutritionPageState extends State<NutritionPage> {
 
   void calculateBMI() {
     if (weight != null && height != null) {
-      double heightInMeters = height! / 100; // Convert height to meters
+      double heightInMeters = height! / 100;
       double bmiValue = weight! / (heightInMeters * heightInMeters);
       setState(() {
         bmi = bmiValue;
@@ -90,7 +98,7 @@ class _NutritionPageState extends State<NutritionPage> {
         return 447.593 + (9.247 * weight!) + (3.098 * height!) - (4.330 * age!);
       }
     } else {
-      return 0.0; // Default BMR value if inputs are missing
+      return 0.0;
     }
   }
 
@@ -100,7 +108,7 @@ class _NutritionPageState extends State<NutritionPage> {
         height != null &&
         age != null &&
         gender != null) {
-      double bmr; // Basal Metabolic Rate - calories needed at rest
+      double bmr;
       if (gender == Gender.Male) {
         bmr = 88.362 + (13.397 * weight!) + (4.799 * height!) - (5.677 * age!);
       } else {
@@ -134,7 +142,7 @@ class _NutritionPageState extends State<NutritionPage> {
 
   String getProteinAdvice() {
     if (bmi != null && weight != null && height != null && age != null) {
-      double bmr; // Basal Metabolic Rate - calories needed at rest
+      double bmr;
       if (gender == Gender.Male) {
         bmr = 88.362 + (13.397 * weight!) + (4.799 * height!) - (5.677 * age!);
       } else {
@@ -142,8 +150,7 @@ class _NutritionPageState extends State<NutritionPage> {
       }
 
       double tdee = bmr;
-      double proteinNeeded =
-          (tdee * 0.15) / 4.0; // Assuming 15% of calories from protein
+      double proteinNeeded = (tdee * 0.15) / 4.0;
 
       double proteinIntake = double.tryParse(proteinController.text) ?? 0.0;
 
@@ -168,34 +175,32 @@ class _NutritionPageState extends State<NutritionPage> {
   }
 
   String getFatAdvice() {
-  if (bmi != null && weight != null && height != null && age != null) {
-    double bmr = calculateBMR(); // Basal Metabolic Rate
-    // Calculate BMR based on gender, weight, height, and age
+    if (bmi != null && weight != null && height != null && age != null) {
+      double bmr = calculateBMR();
 
-    double fatNeeded = (bmr * 0.25) / 9.0; // Assuming 25% of calories from fat
+      double fatNeeded = (bmr * 0.25) / 9.0;
 
-    double fatIntake = double.tryParse(fatController.text) ?? 0.0;
+      double fatIntake = double.tryParse(fatController.text) ?? 0.0;
 
-    if (fatIntake < fatNeeded * 0.8) {
-      return 'Consider increasing your healthy fat intake for overall health.';
-    } else if (fatIntake > fatNeeded * 1.2) {
-      return 'Your fat intake seems high. Focus on moderation for a balanced diet.';
-    } else {
-      if (bmi! < 18.5) {
-        return 'Your fat intake is balanced, but ensure you are meeting nutrient needs for your weight.';
-      } else if (bmi! < 24.9) {
-        return 'Your fat intake is appropriate for your weight and activity level.';
-      } else if (bmi! < 29.9) {
-        return 'Your fat intake is balanced. Focus on maintaining your weight with a balanced diet.';
+      if (fatIntake < fatNeeded * 0.8) {
+        return 'Consider increasing your healthy fat intake for overall health.';
+      } else if (fatIntake > fatNeeded * 1.2) {
+        return 'Your fat intake seems high. Focus on moderation for a balanced diet.';
       } else {
-        return 'Your fat intake is balanced, but consider consulting a healthcare professional for weight management advice.';
+        if (bmi! < 18.5) {
+          return 'Your fat intake is balanced, but ensure you are meeting nutrient needs for your weight.';
+        } else if (bmi! < 24.9) {
+          return 'Your fat intake is appropriate for your weight and activity level.';
+        } else if (bmi! < 29.9) {
+          return 'Your fat intake is balanced. Focus on maintaining your weight with a balanced diet.';
+        } else {
+          return 'Your fat intake is balanced, but consider consulting a healthcare professional for weight management advice.';
+        }
       }
+    } else {
+      return 'Please fill in all required information to get personalized advice.';
     }
-  } else {
-    return 'Please fill in all required information to get personalized advice.';
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +215,6 @@ class _NutritionPageState extends State<NutritionPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ... Input fields for user information (BMI, weight, height, age, gender)
                 DropdownButtonFormField<Gender>(
                   value: gender,
                   items: Gender.values.map((Gender value) {
@@ -226,71 +230,95 @@ class _NutritionPageState extends State<NutritionPage> {
                   },
                   decoration: InputDecoration(labelText: 'Gender'),
                 ),
-                // ... Repeat for other user inputs
-
-                // Nutrient intake input fields
-                _buildNutrientInputField(
-                  controller: carbohydratesController,
-                  label: 'Carbohydrates Intake (grams)',
+                TextFormField(
+                  controller: weightController,
+                  decoration: InputDecoration(
+                    labelText: 'Weight (kg)',
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    setState(() {
+                      weight = double.tryParse(value);
+                    });
+                  },
                 ),
-                _buildNutrientInputField(
-                  controller: proteinController,
-                  label: 'Protein Intake (grams)',
+                TextFormField(
+                  controller: heightController,
+                  decoration: InputDecoration(
+                    labelText: 'Height (cm)',
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    setState(() {
+                      height = double.tryParse(value);
+                    });
+                  },
                 ),
-                // ... Repeat for other nutrients
-
+                TextFormField(
+                  controller: ageController,
+                  decoration: InputDecoration(
+                    labelText: 'Age',
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    setState(() {
+                      age = int.tryParse(value);
+                    });
+                  },
+                ),
+                TextFormField(
+                  controller: bmiController,
+                  decoration: InputDecoration(
+                    labelText: 'BMI',
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    setState(() {
+                      bmi = double.tryParse(value);
+                    });
+                  },
+                ),
                 ElevatedButton(
                   onPressed: calculateNutrition,
                   child: Text('Calculate Nutrition'),
                 ),
-
-                // Nutrient information and advice
-                _buildNutrientInfoTile(
-                  title: 'Carbohydrates',
-                  value: carbohydratesController.text,
-                  advice: getCarbohydratesAdvice(),
+                ListTile(
+                  title: Text('Carbohydrates'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Intake: ${carbohydratesController.text} grams'),
+                      SizedBox(height: 8),
+                      Text(carbohydratesAdvice),
+                    ],
+                  ),
                 ),
-                _buildNutrientInfoTile(
-                  title: 'Protein',
-                  value: proteinController.text,
-                  advice: getProteinAdvice(),
+                ListTile(
+                  title: Text('Protein'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Intake: ${proteinController.text} grams'),
+                      SizedBox(height: 8),
+                      Text(proteinAdvice),
+                    ],
+                  ),
                 ),
-              
+                ListTile(
+                  title: Text('Fat'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Intake: ${fatController.text} grams'),
+                      SizedBox(height: 8),
+                      Text(fatAdvice),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildNutrientInputField({
-    required TextEditingController controller,
-    required String label,
-  }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-      ),
-      keyboardType: TextInputType.number,
-    );
-  }
-
-  Widget _buildNutrientInfoTile({
-    required String title,
-    required String value,
-    required String advice,
-  }) {
-    return ListTile(
-      title: Text(title),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Intake: $value grams'),
-          SizedBox(height: 8),
-          Text(advice),
-        ],
       ),
     );
   }
