@@ -231,7 +231,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ElevatedButton(
                   onPressed: _registerAccount,
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue[800],
+                    backgroundColor: Colors.blue[800],
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),

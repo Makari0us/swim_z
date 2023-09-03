@@ -50,11 +50,20 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 50.0),
-                CircleAvatar(
-                  radius: 70,
-                  backgroundImage: NetworkImage(
-                    user!.profilePictureUrl ??
-                        'https://firebasestorage.googleapis.com/v0/b/swim-z.appspot.com/o/Profile_Images%2Fdefault_profile_picture.png?alt=media&token=3ee89af4-2672-4369-8634-deb09a257200',
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.blue.shade700,
+                      width: 3.0,
+                    ),
+                  ),
+                  child: CircleAvatar(
+                    radius: 70,
+                    backgroundImage: NetworkImage(
+                      user!.profilePictureUrl ??
+                          'https://firebasestorage.googleapis.com/v0/b/swim-z.appspot.com/o/Profile_Images%2Fdefault_profile_picture.png?alt=media&token=3ee89af4-2672-4369-8634-deb09a257200',
+                    ),
                   ),
                 ),
                 SizedBox(height: 30.0),
@@ -95,7 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue[700],
+                    backgroundColor: Colors.blue[700],
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),

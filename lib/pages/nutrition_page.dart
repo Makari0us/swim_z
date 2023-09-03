@@ -37,9 +37,9 @@ class _NutritionPageState extends State<NutritionPage> {
         proteinAdvice = getProteinAdvice();
         fatAdvice = getFatAdvice();
 
-        _showNutrientAdviceDialog('Carbohydrates Advice', carbohydratesAdvice);
-        _showNutrientAdviceDialog('Protein Advice', proteinAdvice);
-        _showNutrientAdviceDialog('Fat Advice', fatAdvice);
+        // _showNutrientAdviceDialog('Carbohydrates Advice', carbohydratesAdvice);
+        // _showNutrientAdviceDialog('Protein Advice', proteinAdvice);
+        // _showNutrientAdviceDialog('Fat Advice', fatAdvice);
       });
     } else {
       _showValidationErrorDialog();
@@ -340,8 +340,4 @@ class _NutritionPageState extends State<NutritionPage> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(home: NutritionPage()));
 }

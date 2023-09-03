@@ -114,28 +114,72 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
           ],
         ),
-        body: Padding(
+        body: Container(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue.shade300, Colors.blue.shade50],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
               child: Column(
                 children: [
                   SizedBox(height: 50.0),
-                  InkWell(
-                    onTap: () => _pickImage(),
-                    child: CircleAvatar(
-                      radius: 70,
-                      backgroundImage: _profileImage != null
-                          ? FileImage(_profileImage!) as ImageProvider
-                          : NetworkImage(widget.user.profilePictureUrl ??
-                              'https://firebasestorage.googleapis.com/v0/b/swim-z.appspot.com/o/Profile_Images%2Fdefault_profile_picture.png?alt=media&token=3ee89af4-2672-4369-8634-deb09a257200'),
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.blue.shade800,
+                        width: 3.0,
+                      ),
+                    ),
+                    child: InkWell(
+                      onTap: () => _pickImage(),
+                      child: CircleAvatar(
+                        radius: 70,
+                        backgroundImage: _profileImage != null
+                            ? FileImage(_profileImage!) as ImageProvider
+                            : NetworkImage(widget.user.profilePictureUrl ??
+                                'https://firebasestorage.googleapis.com/v0/b/swim-z.appspot.com/o/Profile_Images%2Fdefault_profile_picture.png?alt=media&token=3ee89af4-2672-4369-8634-deb09a257200'),
+                      ),
                     ),
                   ),
-                  SizedBox(height: 20.0),
+                  SizedBox(height: 50.0),
                   TextFormField(
                     initialValue: widget.user.name,
-                    decoration: InputDecoration(labelText: 'Name'),
+                    decoration: InputDecoration(
+                      // labelText: 'Name',
+                      hintText: 'Name',
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 3.0,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.person,
+                      ),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your name';
@@ -150,7 +194,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   TextFormField(
                     initialValue: widget.user.age?.toString(),
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Age'),
+                    decoration: InputDecoration(
+                      // labelText: 'Age',
+                      hintText: 'Age',
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 3.0,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.calendar_today,
+                      ),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your age';
@@ -164,7 +234,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   SizedBox(height: 20.0),
                   TextFormField(
                     initialValue: widget.user.swimTeam,
-                    decoration: InputDecoration(labelText: 'Swim Team'),
+                    decoration: InputDecoration(
+                      // labelText: 'Swim Team',
+                      hintText: 'Swim Team',
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 3.0,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.pool,
+                      ),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your swim team';
@@ -179,7 +275,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   TextFormField(
                     initialValue: widget.user.bio,
                     maxLines: 3,
-                    decoration: InputDecoration(labelText: 'Bio'),
+                    decoration: InputDecoration(
+                      // labelText: 'Bio',
+                      hintText: 'Bio',
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 3.0,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.info,
+                      ),
+                    ),
                     onSaved: (value) {
                       _bio = value;
                     },
