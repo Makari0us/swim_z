@@ -215,128 +215,373 @@ class _NutritionPageState extends State<NutritionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nutrition Advisor'),
+        elevation: 2,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+        title: Text(
+          'Nutrition Advisor',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.blue[600],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Form(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                DropdownButtonFormField<Gender>(
-                  value: gender,
-                  items: Gender.values.map((Gender value) {
-                    return DropdownMenuItem<Gender>(
-                      value: value,
-                      child: Text(value.toString().split('.').last),
-                    );
-                  }).toList(),
-                  onChanged: (Gender? newValue) {
-                    setState(() {
-                      gender = newValue;
-                    });
-                  },
-                  decoration: InputDecoration(labelText: 'Gender'),
-                ),
-                TextFormField(
-                  controller: weightController,
-                  decoration: InputDecoration(
-                    labelText: 'Weight (kg)',
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade300, Colors.blue.shade50],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Form(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20.0),
+                  DropdownButtonFormField<Gender>(
+                    value: gender,
+                    items: Gender.values.map((Gender value) {
+                      return DropdownMenuItem<Gender>(
+                        value: value,
+                        child: Text(value.toString().split('.').last),
+                      );
+                    }).toList(),
+                    onChanged: (Gender? newValue) {
+                      setState(() {
+                        gender = newValue;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Gender',
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 3.0,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.person,
+                      ),
+                    ),
                   ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    setState(() {
-                      weight = double.tryParse(value);
-                    });
-                  },
-                ),
-                TextFormField(
-                  controller: heightController,
-                  decoration: InputDecoration(
-                    labelText: 'Height (cm)',
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    controller: weightController,
+                    decoration: InputDecoration(
+                      labelText: 'Weight (kg)',
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 3.0,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.bar_chart,
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      setState(() {
+                        weight = double.tryParse(value);
+                      });
+                    },
                   ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    setState(() {
-                      height = double.tryParse(value);
-                    });
-                  },
-                ),
-                TextFormField(
-                  controller: ageController,
-                  decoration: InputDecoration(
-                    labelText: 'Age',
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    controller: heightController,
+                    decoration: InputDecoration(
+                      labelText: 'Height (cm)',
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 3.0,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.height,
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      setState(() {
+                        height = double.tryParse(value);
+                      });
+                    },
                   ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    setState(() {
-                      age = int.tryParse(value);
-                    });
-                  },
-                ),
-                TextFormField(
-                  controller: carbohydratesController,
-                  decoration: InputDecoration(
-                    labelText: 'Carbohydrates (g)',
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    controller: ageController,
+                    decoration: InputDecoration(
+                      labelText: 'Age (y)',
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 3.0,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.cake,
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      setState(() {
+                        age = int.tryParse(value);
+                      });
+                    },
                   ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    setState(() {
-                      carbohydrates = double.tryParse(value);
-                    });
-                  },
-                ),
-                TextFormField(
-                  controller: proteinController,
-                  decoration: InputDecoration(
-                    labelText: 'Protein (g)',
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    controller: carbohydratesController,
+                    decoration: InputDecoration(
+                      labelText: 'Carbohydrates (g)',
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 3.0,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.agriculture,
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      setState(() {
+                        carbohydrates = double.tryParse(value);
+                      });
+                    },
                   ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    setState(() {
-                      protein = double.tryParse(value);
-                    });
-                  },
-                ),
-                ElevatedButton(
-                  onPressed: calculateNutrition,
-                  child: Text('Calculate Nutrition'),
-                ),
-                ListTile(
-                  title: Text('Carbohydrates'),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Intake: ${carbohydrates} grams'),
-                      SizedBox(height: 8),
-                      Text(carbohydratesAdvice),
-                    ],
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    controller: proteinController,
+                    decoration: InputDecoration(
+                      labelText: 'Protein (g)',
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue[800]!,
+                          width: 3.0,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.fastfood_sharp,
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      setState(() {
+                        protein = double.tryParse(value);
+                      });
+                    },
                   ),
-                ),
-                ListTile(
-                  title: Text('Protein'),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Intake: ${protein} grams'),
-                      SizedBox(height: 8),
-                      Text(proteinAdvice),
-                    ],
+                  SizedBox(height: 20.0),
+                  Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: calculateNutrition,
+                      child: Text(
+                        'Calculate Nutrition',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue[700],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 10.0),
+                      ),
+                    ),
                   ),
-                ),
-                ListTile(
-                  title: Text('BMI'),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Value: ${bmi}'),
-                      SizedBox(height: 8),
-                      Text(getBMIAdvice()),
-                    ],
+                  SizedBox(height: 40.0),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                        color: Colors.blue.shade800,
+                        width: 2,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 10.0),
+                        ListTile(
+                          title: Text(
+                            'Carbohydrates',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue[800],
+                            ),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Intake: ${carbohydrates} grams',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(carbohydratesAdvice),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10.0),
+                        ListTile(
+                          title: Text(
+                            'Protein',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue[800],
+                            ),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Intake: ${protein} grams',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(proteinAdvice),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10.0),
+                        ListTile(
+                          title: Text(
+                            'BMI',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue[800],
+                            ),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Value: ${bmi!.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(getBMIAdvice()),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10.0),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  SizedBox(height: 20.0),
+                ],
+              ),
             ),
           ),
         ),

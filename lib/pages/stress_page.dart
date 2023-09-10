@@ -14,7 +14,7 @@ class StressPage extends StatefulWidget {
 class _StressPageState extends State<StressPage> {
   Widget buildSection(String title, String bgImageAsset, Widget page) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
