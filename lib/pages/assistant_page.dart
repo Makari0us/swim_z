@@ -14,7 +14,7 @@ class _AssistantPageState extends State<AssistantPage> {
   List<String> _chatHistory = [];
 
   Future<String> _getChatResponse(String input) async {
-    final apiKey = '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';
+    final apiKey = 'API-KEY-HERE';
     final model = 'gpt-3.5-turbo';
     final apiEndpoint = 'https://api.openai.com/v1/chat/completions';
 
@@ -61,21 +61,6 @@ class _AssistantPageState extends State<AssistantPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 2,
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
-        title: Text(
-          'Assistant Page',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
-        ),
-        backgroundColor: Colors.blue,
-      ),
       body: Column(
         children: [
           Expanded(

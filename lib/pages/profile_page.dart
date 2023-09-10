@@ -11,7 +11,6 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'package:swim_z/user.dart';
 
-
 class ProfilePage extends StatefulWidget {
   final String userID;
 
@@ -33,8 +32,8 @@ class _ProfilePageState extends State<ProfilePage> {
           return Scaffold(
             body: Center(
               child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade700), 
-                strokeWidth: 3, 
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade700),
+                strokeWidth: 3,
               ),
             ),
           );
@@ -43,21 +42,13 @@ class _ProfilePageState extends State<ProfilePage> {
             body: Center(
               child: Text(
                 'Error: ${snapshot.error}',
-                style: TextStyle(color: Colors.red, fontSize: 18), 
+                style: TextStyle(color: Colors.red, fontSize: 18),
               ),
             ),
           );
         } else {
           user = snapshot.data;
           return Scaffold(
-            appBar: AppBar(
-              elevation: 4, 
-              title: Text(
-                'Profile',
-                style: TextStyle(fontSize: 24, color: Colors.black87), 
-              ),
-              backgroundColor: Colors.blue[700], 
-            ),
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -156,20 +158,6 @@ class _LogPageState extends State<LogPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 2,
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
-        title: Text(
-          'Log Page',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: Colors.blue[600],
-      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.0),
         child: Column(
@@ -190,7 +178,273 @@ class _LogPageState extends State<LogPage> {
                       fontSize: 20.0,
                     ),
                   ),
-                  // Rest of your code...
+                  TextField(
+                    controller: _journalTitleController,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.abc,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Journal Title',
+                      hintStyle: TextStyle(color: Colors.white),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                  TextField(
+                    controller: _dateController,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.calendar_today,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Date',
+                      hintStyle: TextStyle(color: Colors.white),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    readOnly: true,
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(), //get today's date
+                          firstDate: DateTime(
+                              2000), //DateTime.now() - not to allow to choose before today.
+                          lastDate: DateTime(2101));
+
+                      if (pickedDate != null) {
+                        print(
+                            pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+                        String formattedDate = DateFormat('yyyy-MM-dd').format(
+                            pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                        print(
+                            formattedDate); //formatted date output using intl package =>  2022-07-04
+                        //You can format date as per your need
+                        setState(() {
+                          _dateController.text =
+                              formattedDate; //set foratted date to TextField value.
+                        });
+                      } else {
+                        print("Date is not selected");
+                      }
+                    },
+                  ),
+                  SizedBox(height: 10.0),
+                  TextField(
+                    controller: _locationController,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.location_pin,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Location',
+                      hintStyle: TextStyle(color: Colors.white),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 10.0),
+            // Swim Breakdown
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              padding: EdgeInsets.all(30.0),
+              child: Column(
+                children: [
+                  Text(
+                    'Swim Breakdown',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  DropdownButtonFormField(
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.water,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Stroke',
+                      hintStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    dropdownColor: Colors.blue,
+                    value: _selectedStroke,
+                    items: _strokeOptions.map((String stroke) {
+                      return DropdownMenuItem<String>(
+                        value: stroke,
+                        child: Text(stroke),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedStroke = value;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 10.0),
+                  Row(
+                    children: [
+                      Container(
+                        width: 200.0,
+                        child: DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.arrow_circle_right_outlined,
+                              color: Colors.white,
+                            ),
+                            hintText: 'Distance',
+                            hintStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                          dropdownColor: Colors.blue,
+                          value: _selectedDistance,
+                          items: _distanceOptions.map((String distance) {
+                            return DropdownMenuItem<String>(
+                              value: distance,
+                              child: Text(distance),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedDistance = value;
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 10.0),
+                      Container(
+                        width: 75.0,
+                        child: DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            hintText: 'Unit',
+                            hintStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                          dropdownColor: Colors.blue,
+                          value: _selectedUnit,
+                          items: _unitOptions.map((String unit) {
+                            return DropdownMenuItem<String>(
+                              value: unit,
+                              child: Text(unit),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedUnit = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10.0),
+                ],
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.blue[700],
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              padding: EdgeInsets.all(30.0),
+              child: Column(
+                children: [
+                  Text(
+                    'Workout Notes',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  TextField(
+                    controller: _resultsController,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.check_circle_outline,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Results',
+                      hintStyle: TextStyle(color: Colors.white),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                  TextField(
+                    controller: _goalsController,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.access_time,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Goals',
+                      hintStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
                 ],
               ),
             ),

@@ -8,16 +8,18 @@ class NutritionPage extends StatefulWidget {
 }
 
 class _NutritionPageState extends State<NutritionPage> {
-  double? bmi;
+  double? bmi = 0;
   double? weight;
   double? height;
   int? age;
   Gender? gender;
+  double? carbohydrates = 0;
+  double? protein = 0;
 
-  TextEditingController bmiController = TextEditingController();
   TextEditingController weightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
   TextEditingController ageController = TextEditingController();
+
   TextEditingController carbohydratesController = TextEditingController();
   TextEditingController proteinController = TextEditingController();
   TextEditingController fatController = TextEditingController();
@@ -25,44 +27,6 @@ class _NutritionPageState extends State<NutritionPage> {
   String carbohydratesAdvice = '';
   String proteinAdvice = '';
   String fatAdvice = '';
-
-  void calculateNutrition() {
-    if (bmi != null &&
-        weight != null &&
-        height != null &&
-        age != null &&
-        gender != null) {
-      setState(() {
-        carbohydratesAdvice = getCarbohydratesAdvice();
-        proteinAdvice = getProteinAdvice();
-        fatAdvice = getFatAdvice();
-
-        _showNutrientAdviceDialog('Carbohydrates Advice', carbohydratesAdvice);
-        _showNutrientAdviceDialog('Protein Advice', proteinAdvice);
-        _showNutrientAdviceDialog('Fat Advice', fatAdvice);
-      });
-    } else {
-      _showValidationErrorDialog();
-    }
-  }
-
-  void _showNutrientAdviceDialog(String nutrient, String advice) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('$nutrient'),
-        content: Text('$advice'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
 
   void calculateBMI() {
     if (weight != null && height != null) {
@@ -74,21 +38,45 @@ class _NutritionPageState extends State<NutritionPage> {
     }
   }
 
-  String getBMIAdvice() {
-    if (bmi != null) {
-      if (bmi! < 18.5) {
-        return 'You are underweight. Consider increasing your nutrient intake.';
-      } else if (bmi! < 24.9) {
-        return 'Your weight is within the normal range. Maintain a balanced diet.';
-      } else if (bmi! < 29.9) {
-        return 'You are overweight. Focus on portion control and regular exercise.';
-      } else {
-        return 'You are in the obese range. Consult a healthcare professional for advice.';
-      }
+  void calculateNutrition() {
+    if (weight != null &&
+        height != null &&
+        age != null &&
+        gender != null &&
+        (carbohydrates != null && carbohydrates != 0) &&
+        (protein != null && protein != 0)) {
+      calculateBMI();
+      setState(() {
+        carbohydratesAdvice = getCarbohydratesAdvice();
+        proteinAdvice = getProteinAdvice();
+        // fatAdvice = getFatAdvice();
+
+        // _showNutrientAdviceDialog('Carbohydrates Advice', carbohydratesAdvice);
+        // _showNutrientAdviceDialog('Protein Advice', proteinAdvice);
+        // _showNutrientAdviceDialog('Fat Advice', fatAdvice);
+      });
     } else {
-      return 'Please enter weight and height to calculate BMI.';
+      _showValidationErrorDialog();
     }
   }
+
+  // void _showNutrientAdviceDialog(String nutrient, String advice) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: Text('$nutrient'),
+  //       content: Text('$advice'),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () {
+  //             Navigator.of(context).pop();
+  //           },
+  //           child: Text('OK'),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   double calculateBMR() {
     if (weight != null && height != null && age != null && gender != null) {
@@ -118,7 +106,7 @@ class _NutritionPageState extends State<NutritionPage> {
       double tdee = bmr;
       double carbsNeeded = (tdee * 0.6) / 4.0;
 
-      double carbsIntake = double.tryParse(carbohydratesController.text) ?? 0.0;
+      double carbsIntake = carbohydrates ?? 0.0;
 
       if (carbsIntake < carbsNeeded * 0.8) {
         return 'Consider increasing your carbohydrate intake for energy.';
@@ -141,7 +129,10 @@ class _NutritionPageState extends State<NutritionPage> {
   }
 
   String getProteinAdvice() {
-    if (bmi != null && weight != null && height != null && age != null) {
+    if ((bmi != null && bmi != 0) &&
+        weight != null &&
+        height != null &&
+        age != null) {
       double bmr;
       if (gender == Gender.Male) {
         bmr = 88.362 + (13.397 * weight!) + (4.799 * height!) - (5.677 * age!);
@@ -152,7 +143,7 @@ class _NutritionPageState extends State<NutritionPage> {
       double tdee = bmr;
       double proteinNeeded = (tdee * 0.15) / 4.0;
 
-      double proteinIntake = double.tryParse(proteinController.text) ?? 0.0;
+      double proteinIntake = protein ?? 0.0;
 
       if (proteinIntake < proteinNeeded * 0.8) {
         return 'Consider increasing your protein intake to support your body\'s needs.';
@@ -174,37 +165,52 @@ class _NutritionPageState extends State<NutritionPage> {
     }
   }
 
-  String getFatAdvice() {
-    if (bmi != null && weight != null && height != null && age != null) {
-      double bmr = calculateBMR();
-
-      double fatNeeded = (bmr * 0.25) / 9.0;
-
-      double fatIntake = double.tryParse(fatController.text) ?? 0.0;
-
-      if (fatIntake < fatNeeded * 0.8) {
-        return 'Consider increasing your healthy fat intake for overall health.';
-      } else if (fatIntake > fatNeeded * 1.2) {
-        return 'Your fat intake seems high. Focus on moderation for a balanced diet.';
+  String getBMIAdvice() {
+    if (bmi != null && bmi != 0) {
+      if (bmi! < 18.5) {
+        return 'You are underweight. Consider increasing your nutrient intake.';
+      } else if (bmi! < 24.9) {
+        return 'Your weight is within the normal range. Maintain a balanced diet.';
+      } else if (bmi! < 29.9) {
+        return 'You are overweight. Focus on portion control and regular exercise.';
       } else {
-        if (bmi! < 18.5) {
-          return 'Your fat intake is balanced, but ensure you are meeting nutrient needs for your weight.';
-        } else if (bmi! < 24.9) {
-          return 'Your fat intake is appropriate for your weight and activity level.';
-        } else if (bmi! < 29.9) {
-          return 'Your fat intake is balanced. Focus on maintaining your weight with a balanced diet.';
-        } else {
-          return 'Your fat intake is balanced, but consider consulting a healthcare professional for weight management advice.';
-        }
+        return 'You are in the obese range. Consult a healthcare professional for advice.';
       }
     } else {
-      return 'Please fill in all required information to get personalized advice.';
+      return 'Please enter weight and height to calculate BMI.';
     }
   }
 
+  // String getFatAdvice() {
+  //   if (bmi != null && weight != null && height != null && age != null) {
+  //     double bmr = calculateBMR();
+
+  //     double fatNeeded = (bmr * 0.25) / 9.0;
+
+  //     double fatIntake = double.tryParse(fatController.text) ?? 0.0;
+
+  //     if (fatIntake < fatNeeded * 0.8) {
+  //       return 'Consider increasing your healthy fat intake for overall health.';
+  //     } else if (fatIntake > fatNeeded * 1.2) {
+  //       return 'Your fat intake seems high. Focus on moderation for a balanced diet.';
+  //     } else {
+  //       if (bmi! < 18.5) {
+  //         return 'Your fat intake is balanced, but ensure you are meeting nutrient needs for your weight.';
+  //       } else if (bmi! < 24.9) {
+  //         return 'Your fat intake is appropriate for your weight and activity level.';
+  //       } else if (bmi! < 29.9) {
+  //         return 'Your fat intake is balanced. Focus on maintaining your weight with a balanced diet.';
+  //       } else {
+  //         return 'Your fat intake is balanced, but consider consulting a healthcare professional for weight management advice.';
+  //       }
+  //     }
+  //   } else {
+  //     return 'Please fill in all required information to get personalized advice.';
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text('Nutrition Advisor'),
@@ -267,6 +273,30 @@ class _NutritionPageState extends State<NutritionPage> {
                     });
                   },
                 ),
+                TextFormField(
+                  controller: carbohydratesController,
+                  decoration: InputDecoration(
+                    labelText: 'Carbohydrates (g)',
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    setState(() {
+                      carbohydrates = double.tryParse(value);
+                    });
+                  },
+                ),
+                TextFormField(
+                  controller: proteinController,
+                  decoration: InputDecoration(
+                    labelText: 'Protein (g)',
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    setState(() {
+                      protein = double.tryParse(value);
+                    });
+                  },
+                ),
                 ElevatedButton(
                   onPressed: calculateNutrition,
                   child: Text('Calculate Nutrition'),
@@ -276,7 +306,7 @@ class _NutritionPageState extends State<NutritionPage> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Intake: ${carbohydratesController.text} grams'),
+                      Text('Intake: ${carbohydrates} grams'),
                       SizedBox(height: 8),
                       Text(carbohydratesAdvice),
                     ],
@@ -287,7 +317,7 @@ class _NutritionPageState extends State<NutritionPage> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Intake: ${proteinController.text} grams'),
+                      Text('Intake: ${protein} grams'),
                       SizedBox(height: 8),
                       Text(proteinAdvice),
                     ],
@@ -298,7 +328,7 @@ class _NutritionPageState extends State<NutritionPage> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Value: ${bmiController.text}'),
+                      Text('Value: ${bmi}'),
                       SizedBox(height: 8),
                       Text(getBMIAdvice()),
                     ],
@@ -330,9 +360,3 @@ class _NutritionPageState extends State<NutritionPage> {
     );
   }
 }
-
-
-
-
-
-
