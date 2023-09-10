@@ -37,9 +37,9 @@ class _NutritionPageState extends State<NutritionPage> {
         proteinAdvice = getProteinAdvice();
         fatAdvice = getFatAdvice();
 
-        // _showNutrientAdviceDialog('Carbohydrates Advice', carbohydratesAdvice);
-        // _showNutrientAdviceDialog('Protein Advice', proteinAdvice);
-        // _showNutrientAdviceDialog('Fat Advice', fatAdvice);
+        _showNutrientAdviceDialog('Carbohydrates Advice', carbohydratesAdvice);
+        _showNutrientAdviceDialog('Protein Advice', proteinAdvice);
+        _showNutrientAdviceDialog('Fat Advice', fatAdvice);
       });
     } else {
       _showValidationErrorDialog();
@@ -204,6 +204,7 @@ class _NutritionPageState extends State<NutritionPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Nutrition Advisor'),
@@ -266,18 +267,6 @@ class _NutritionPageState extends State<NutritionPage> {
                     });
                   },
                 ),
-                TextFormField(
-                  controller: bmiController,
-                  decoration: InputDecoration(
-                    labelText: 'BMI',
-                  ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    setState(() {
-                      bmi = double.tryParse(value);
-                    });
-                  },
-                ),
                 ElevatedButton(
                   onPressed: calculateNutrition,
                   child: Text('Calculate Nutrition'),
@@ -305,13 +294,13 @@ class _NutritionPageState extends State<NutritionPage> {
                   ),
                 ),
                 ListTile(
-                  title: Text('Fat'),
+                  title: Text('BMI'),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Intake: ${fatController.text} grams'),
+                      Text('Value: ${bmiController.text}'),
                       SizedBox(height: 8),
-                      Text(fatAdvice),
+                      Text(getBMIAdvice()),
                     ],
                   ),
                 ),
@@ -341,3 +330,9 @@ class _NutritionPageState extends State<NutritionPage> {
     );
   }
 }
+
+
+
+
+
+

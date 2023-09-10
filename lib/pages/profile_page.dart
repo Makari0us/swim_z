@@ -11,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'package:swim_z/user.dart';
 
+
 class ProfilePage extends StatefulWidget {
   final String userID;
 
@@ -21,9 +22,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final picker = ImagePicker();
-  // File? _profileImage;
-  // bool _isUploadingImage = false;
   UserProfile? user;
 
   @override
@@ -34,36 +32,41 @@ class _ProfilePageState extends State<ProfilePage> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             body: Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade700), 
+                strokeWidth: 3, 
+              ),
             ),
           );
         } else if (snapshot.hasError) {
           return Scaffold(
             body: Center(
-              child: Text('Error: ${snapshot.error}'),
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: TextStyle(color: Colors.red, fontSize: 18), 
+              ),
             ),
           );
         } else {
           user = snapshot.data;
           return Scaffold(
+            appBar: AppBar(
+              elevation: 4, 
+              title: Text(
+                'Profile',
+                style: TextStyle(fontSize: 24, color: Colors.black87), 
+              ),
+              backgroundColor: Colors.blue[700], 
+            ),
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 50.0),
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.blue.shade700,
-                      width: 3.0,
-                    ),
-                  ),
-                  child: CircleAvatar(
-                    radius: 70,
-                    backgroundImage: NetworkImage(
-                      user!.profilePictureUrl ??
-                          'https://firebasestorage.googleapis.com/v0/b/swim-z.appspot.com/o/Profile_Images%2Fdefault_profile_picture.png?alt=media&token=3ee89af4-2672-4369-8634-deb09a257200',
-                    ),
+                CircleAvatar(
+                  radius: 70,
+                  backgroundImage: NetworkImage(
+                    user!.profilePictureUrl ??
+                        'https://firebasestorage.googleapis.com/v0/b/swim-z.appspot.com/o/Profile_Images%2Fdefault_profile_picture.png?alt=media&token=3ee89af4-2672-4369-8634-deb09a257200',
                   ),
                 ),
                 SizedBox(height: 30.0),
@@ -77,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     _buildInfoColumn('Swim Team', '${user!.swimTeam ?? "N/A"}'),
                   ],
                 ),
-                if (user!.bio!.isNotEmpty) // Check if bio is not empty
+                if (user!.bio!.isNotEmpty)
                   Column(
                     children: [
                       SizedBox(height: 20.0), // Add SizedBox above the bio
@@ -97,7 +100,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     );
 
                     if (updatedUser != null) {
-                      // Update the UI with the new user data
                       setState(() {
                         user = updatedUser;
                       });
@@ -165,44 +167,6 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
   }
-
-  // Future<void> _pickImage() async {
-  //   final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-  //   if (pickedImage != null) {
-  //     setState(() {
-  //       _isUploadingImage = true;
-  //     });
-
-  //     final imageFile = File(pickedImage.path);
-
-  //     final storageRef = firebase_storage.FirebaseStorage.instance
-  //         .ref()
-  //         .child('Profile_Images')
-  //         .child(widget.userID);
-
-  //     try {
-  //       await storageRef.putFile(imageFile);
-  //       final downloadURL = await storageRef.getDownloadURL();
-
-  //       final userRef =
-  //           FirebaseFirestore.instance.collection('Users').doc(widget.userID);
-
-  //       await userRef.update({
-  //         'Profile Picture': downloadURL,
-  //       });
-
-  //       setState(() {
-  //         _profileImage = imageFile;
-  //         _isUploadingImage = false;
-  //       });
-  //     } catch (e) {
-  //       print('Error uploading image: $e');
-  //       setState(() {
-  //         _isUploadingImage = false;
-  //       });
-  //     }
-  //   }
-  // }
 
   Future<UserProfile> _fetchUserData() async {
     final userRef =

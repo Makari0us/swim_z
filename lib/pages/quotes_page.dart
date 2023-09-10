@@ -30,7 +30,7 @@ class _QuotesPageState extends State<QuotesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 2,
+        elevation: 2, // Added elevation
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
@@ -43,15 +43,29 @@ class _QuotesPageState extends State<QuotesPage> {
         ),
         backgroundColor: Colors.blue[600],
       ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(15.0),
-          child: Text(
-            _QOTD,
-            style: TextStyle(
-              fontSize: 20,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade300, Colors.blue.shade50],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Center(
+          child: Card(
+            elevation: 4, // Added card elevation
+            margin: EdgeInsets.all(16.0),
+            child: Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text(
+                _QOTD,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black, // Changed text color
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
-            textAlign: TextAlign.center,
           ),
         ),
       ),

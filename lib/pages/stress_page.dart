@@ -30,6 +30,11 @@ class _StressPageState extends State<StressPage> {
                 blurRadius: 5.0,
               ),
             ],
+            gradient: LinearGradient(
+              colors: [Colors.blue.shade400, Colors.blue.shade200],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
           child: Stack(
             children: [

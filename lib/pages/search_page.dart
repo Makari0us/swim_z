@@ -13,7 +13,7 @@ class _SearchPageState extends State<SearchPage> {
 
   void _performSearch(String query) async {
     final apiKey =
-        'AIzaSyCFAZp_WLn2ugMR5PpssVtfl6TIaMdH4gE'; // Replace with your API key
+        'YOUR_API_KEY'; // Replace with your API key
     final url =
         'https://www.googleapis.com/customsearch/v1?key=$apiKey&cx=80ae8e2dc41f548d3&q=$query'; // Replace with your search engine ID
 
@@ -34,10 +34,18 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Advice'),
+        elevation: 2, // Added elevation
       ),
       body: Column(
         children: [
-          Padding(
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.blue.shade300, Colors.blue.shade50],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
             padding: EdgeInsets.all(16.0),
             child: TextField(
               controller: _searchController,
@@ -49,6 +57,11 @@ class _SearchPageState extends State<SearchPage> {
                     _performSearch(_searchController.text);
                   },
                 ),
+                filled: true,
+                fillColor: Colors.white, // Added white background
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
               ),
             ),
           ),
@@ -57,30 +70,33 @@ class _SearchPageState extends State<SearchPage> {
               itemCount: _searchResults.length,
               itemBuilder: (BuildContext context, int index) {
                 final result = _searchResults[index];
-                return Container(
-                  color: Colors.blue,
+                return Card(
+                  elevation: 4, // Added card elevation
                   margin: EdgeInsets.all(8.0),
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        result['title'] ?? 'Title not available',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          result['title'] ?? 'Title not available',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        result['description'] ?? 'Description not available',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14.0,
+                        SizedBox(height: 8.0),
+                        Text(
+                          result['description'] ?? 'Description not available',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.0,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },

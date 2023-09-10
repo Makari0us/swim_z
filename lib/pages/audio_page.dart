@@ -14,7 +14,7 @@ class AudioPage extends StatefulWidget {
 class _AudioPageState extends State<AudioPage> {
   late List<Reference> audioFiles;
   late AudioPlayer _audioPlayer;
-  int? currentlyPlayingIndex; // Index of currently playing audio
+  int? currentlyPlayingIndex;
 
   @override
   void initState() {
@@ -48,13 +48,11 @@ class _AudioPageState extends State<AudioPage> {
       Reference audioRef = storageRef.child(audioFileName);
 
       if (currentlyPlayingIndex != null && currentlyPlayingIndex == index) {
-        // If the same audio is already playing, pause it
         await _audioPlayer.pause();
         setState(() {
-          currentlyPlayingIndex = null; // Reset currentlyPlayingIndex
+          currentlyPlayingIndex = null;
         });
       } else {
-        // If a different audio is playing or nothing is playing, play the selected audio
         await _audioPlayer.setUrl(await audioRef.getDownloadURL());
         await _audioPlayer.play();
         setState(() {
@@ -85,6 +83,7 @@ class _AudioPageState extends State<AudioPage> {
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
+            fontSize: 24,
           ),
         ),
         backgroundColor: Colors.blue[600],
@@ -100,7 +99,9 @@ class _AudioPageState extends State<AudioPage> {
         ),
         child: audioFiles.isEmpty
             ? Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                ),
               )
             : ListView.builder(
                 itemCount: audioFiles.length,

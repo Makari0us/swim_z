@@ -90,7 +90,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       'Swim Team': _swimTeam,
                       'Bio': _bio,
                       if (_isProfileImageChanged)
-                        'Profile Picture': _profileImage,
+                        'Profile Picture': _profileImage.toString(),
                     });
 
                     UserProfile updatedUser = UserProfile(
@@ -154,7 +154,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   TextFormField(
                     initialValue: widget.user.name,
                     decoration: InputDecoration(
-                      // labelText: 'Name',
                       hintText: 'Name',
                       filled: true,
                       fillColor: Colors.white,
@@ -195,7 +194,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     initialValue: widget.user.age?.toString(),
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      // labelText: 'Age',
                       hintText: 'Age',
                       filled: true,
                       fillColor: Colors.white,
@@ -235,7 +233,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   TextFormField(
                     initialValue: widget.user.swimTeam,
                     decoration: InputDecoration(
-                      // labelText: 'Swim Team',
                       hintText: 'Swim Team',
                       filled: true,
                       fillColor: Colors.white,
@@ -276,7 +273,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     initialValue: widget.user.bio,
                     maxLines: 3,
                     decoration: InputDecoration(
-                      // labelText: 'Bio',
                       hintText: 'Bio',
                       filled: true,
                       fillColor: Colors.white,
