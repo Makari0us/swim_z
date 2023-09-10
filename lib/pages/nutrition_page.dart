@@ -24,9 +24,11 @@ class _NutritionPageState extends State<NutritionPage> {
   TextEditingController proteinController = TextEditingController();
   TextEditingController fatController = TextEditingController();
 
-  String carbohydratesAdvice = '';
-  String proteinAdvice = '';
-  String fatAdvice = '';
+  String carbohydratesAdvice =
+      'Please fill in all required information to get personalized advice.';
+  String proteinAdvice =
+      'Please fill in all required information to get personalized advice.';
+  // String fatAdvice = '';
 
   void calculateBMI() {
     if (weight != null && height != null) {
