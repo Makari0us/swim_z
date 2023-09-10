@@ -61,6 +61,21 @@ class _AssistantPageState extends State<AssistantPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 2,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+        title: Text(
+          'Assistant Page',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+        ),
+        backgroundColor: Colors.blue,
+      ),
       body: Column(
         children: [
           Expanded(
@@ -76,12 +91,12 @@ class _AssistantPageState extends State<AssistantPage> {
                     : chat;
 
                 TextStyle labelStyle = TextStyle(
-                  fontSize: 18, // Adjust the font size as needed
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                 );
 
                 TextStyle messageStyle = TextStyle(
-                  fontSize: 18, // Adjust the font size as needed
+                  fontSize: 18,
                 );
 
                 return Padding(

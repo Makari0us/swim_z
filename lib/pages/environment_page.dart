@@ -65,7 +65,19 @@ class _EnvironmentPageState extends State<EnvironmentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Environment Page'),
+        elevation: 2,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+        title: Text(
+          'Environment Page',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+        ),
+        backgroundColor: Colors.blue[600],
       ),
       body: Stack(
         children: [
@@ -96,7 +108,13 @@ class _EnvironmentPageState extends State<EnvironmentPage> {
                     color: Colors.white,
                     child: Text(
                         'Lat: ${_currentLocation!.latitude!.toStringAsFixed(4)}\n'
-                        'Lng: ${_currentLocation!.longitude!.toStringAsFixed(4)}'),
+                        'Lng: ${_currentLocation!.longitude!.toStringAsFixed(4)}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                    ),
                   ),
                 )
               : Container(),
