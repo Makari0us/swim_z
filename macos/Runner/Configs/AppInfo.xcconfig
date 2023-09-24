@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = swim_z
+PRODUCT_NAME = Swimzen;
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.swimz
+PRODUCT_BUNDLE_IDENTIFIER = com.daniel.swim_z;
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.

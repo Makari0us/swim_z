@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:253865350437:android:550883b62b168dd96ff6cc",
+        "mobilesdk_app_id": "1:253865350437:android:993cfb68174924536ff6cc",
         "android_client_info": {
-          "package_name": "com.example.swim_z"
+          "package_name": "com.daniel.swim_z"
         }
       },
       "oauth_client": [
@@ -29,6 +29,13 @@
             {
               "client_id": "253865350437-i7eouu9nre9ikbtk63s2lu937t6avi2c.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "253865350437-sv5433sk3jf6mdi66eqloc9miealen8f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.swimz"
+              }
             }
           ]
         }
